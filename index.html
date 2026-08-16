@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <title>JetonBar</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f4f6;color:#111827}.app{max-width:620px;margin:auto;padding:14px}h1{text-align:center;margin:6px 0 4px}.version{text-align:center;font-size:12px;color:#6b7280;margin-bottom:10px}.session-info,.stats,.status{background:#fff;border:1px solid #d1d5db;border-radius:12px;padding:10px 12px;margin-bottom:14px}.status{font-size:14px;line-height:1.35}.status.ok{background:#ecfdf5;border-color:#86efac;color:#166534}.status.warn{background:#fffbeb;border-color:#fcd34d;color:#92400e}.status.error{background:#fef2f2;border-color:#fca5a5;color:#991b1b}.status.local{background:#eff6ff;border-color:#93c5fd;color:#1e40af}.section-title{margin:18px 0 8px;padding:10px 12px;border-radius:10px;background:#111827;color:#fff;font-size:19px;font-weight:800}.list{display:grid;gap:9px}.item{display:grid;grid-template-columns:minmax(0,1fr) 54px 45px 54px;gap:8px;align-items:center;padding:10px;border:1px solid #d1d5db;border-radius:12px;background:#fff}.name{min-width:0;font-size:17px;font-weight:700;line-height:1.2}button{min-height:48px;border:0;border-radius:10px;font-size:17px;font-weight:800;cursor:pointer;touch-action:manipulation;padding:8px 12px}button:disabled{opacity:.55;cursor:not-allowed}.minus,.plus{font-size:25px;padding:0}.minus{background:#fee2e2;color:#991b1b}.plus{background:#dcfce7;color:#166534}.qty{text-align:center;font-size:22px;font-weight:800}.total-card{margin-top:20px;padding:18px;border-radius:14px;background:#111827;color:#fff;text-align:center}.total-label{font-size:15px;text-transform:uppercase;letter-spacing:1px;opacity:.8}.total{margin-top:6px;font-size:42px;font-weight:900}.actions{display:grid;gap:10px;margin-top:12px}.validate{background:#16a34a;color:#fff}.sync{background:#2563eb;color:#fff}.close{background:#f59e0b;color:#111827}.danger{background:#dc2626;color:#fff}.secondary{background:#e5e7eb;color:#111827}.outline{background:#fff;color:#111827;border:2px solid #d1d5db}.stats{text-align:center;font-weight:700;margin-top:12px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000;overflow:auto}.modal.show{display:flex}.modal-card{width:min(100%,450px);max-height:calc(100vh - 36px);overflow:auto;background:#fff;border-radius:16px;padding:18px}.modal-card h2{margin-top:0}.choice-grid{display:grid;gap:10px}.choice{padding:14px;text-align:left;min-height:68px}.choice strong{display:block;font-size:17px}.choice span{display:block;font-size:13px;font-weight:normal;margin-top:3px;color:#4b5563}label{display:block;font-weight:700;margin:10px 0 5px}input{width:100%;padding:12px;border:1px solid #9ca3af;border-radius:10px;font-size:16px}.modal-actions{display:grid;gap:8px;margin-top:16px}.small{font-size:13px;color:#6b7280;line-height:1.4}.mode-badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e5e7eb;font-size:12px;font-weight:800;margin-bottom:8px}video{width:100%;max-height:330px;background:#111;border-radius:12px}.hidden{display:none!important}@media(max-width:420px){.item{grid-template-columns:minmax(0,1fr) 48px 38px 48px;gap:6px;padding:8px}.name{font-size:15px}button{min-height:44px}}
+  </style>
+</head>
+<body>
+<main class="app">
+  <h1>JetonBar</h1><div class="version">v3.0 hybride</div>
+  <div id="configStatus" class="status"></div><div id="sessionInfo" class="session-info"></div>
+  <div class="section-title">🍺 Boissons</div><section id="drinksList" class="list"></section>
+  <div class="section-title">🥤 Gobelets</div><section id="cupsList" class="list"></section>
+  <section class="total-card"><div class="total-label">Total de la commande</div><div id="total" class="total">0 jeton</div></section>
+  <div class="actions"><button id="validateBtn" class="validate">Valider la commande</button></div>
+  <div id="stats" class="stats">0 commande enregistrée</div>
+  <div class="actions">
+    <button id="syncBtn" class="sync">Synchroniser maintenant</button>
+    <button id="csvBtn" class="sync">Exporter / partager le CSV</button>
+    <button id="closeBtn" class="close">Clôturer la session</button>
+    <button id="newSessionBtn" class="secondary">Changer de session</button>
+  </div>
+</main>
+
+<div id="startModal" class="modal"><div class="modal-card">
+  <h2>Ouvrir une session</h2>
+  <p>Choisis comment cette session doit fonctionner.</p>
+  <div class="choice-grid">
+    <button id="savedConfigBtn" class="choice sync"><strong>Festival — configuration enregistrée</strong><span>Utiliser la configuration déjà mémorisée sur ce téléphone.</span></button>
+    <button id="scanConfigBtn" class="choice validate"><strong>Festival — scanner le QR</strong><span>Scanner le QR fourni par l’organisateur.</span></button>
+    <button id="manualConfigBtn" class="choice outline"><strong>Festival — configuration manuelle</strong><span>Saisir l’adresse du serveur et le code festival.</span></button>
+    <button id="localSessionBtn" class="choice close"><strong>Session locale — sans festival</strong><span>Aucun envoi serveur. Les commandes seront exportées en CSV.</span></button>
+  </div>
+</div></div>
+
+<div id="manualModal" class="modal"><div class="modal-card">
+  <h2>Configuration manuelle</h2>
+  <label for="endpointInput">Adresse de l’Edge Function</label><input id="endpointInput" type="url" placeholder="https://…supabase.co/functions/v1/jetonbar">
+  <label for="codeInput">Code festival</label><input id="codeInput" type="password" autocomplete="off">
+  <div class="modal-actions"><button id="saveManualBtn" class="validate">Enregistrer et continuer</button><button id="cancelManualBtn" class="secondary">Retour</button></div>
+</div></div>
+
+<div id="scanModal" class="modal"><div class="modal-card">
+  <h2>Scanner le QR de configuration</h2><video id="scannerVideo" playsinline muted></video>
+  <p id="scannerMessage" class="small">Autorise l’accès à la caméra, puis présente le QR devant l’objectif.</p>
+  <label for="qrLinkInput">Ou coller le lien contenu dans le QR</label><input id="qrLinkInput" placeholder="https://…/#config=…">
+  <div class="modal-actions"><button id="useQrLinkBtn" class="validate">Utiliser ce lien</button><button id="cancelScanBtn" class="secondary">Retour</button></div>
+</div></div>
+
+<div id="nameModal" class="modal"><div class="modal-card">
+  <h2>Identité du bénévole</h2><div id="selectedMode" class="mode-badge"></div>
+  <label for="firstName">Prénom</label><input id="firstName" autocomplete="given-name">
+  <label for="lastName">Nom</label><input id="lastName" autocomplete="family-name">
+  <div class="modal-actions"><button id="startSessionBtn" class="validate">Commencer la session</button><button id="backToModeBtn" class="secondary">Retour au choix</button></div>
+</div></div>
+
+<div id="closeModal" class="modal"><div class="modal-card">
+  <h2>Clôturer la session</h2><p id="closeText"></p><p class="small" id="closeNote"></p>
+  <div class="modal-actions"><button id="confirmCloseBtn" class="sync"></button><button id="cancelCloseBtn" class="secondary">Annuler</button></div>
+</div></div>
+
+<script>
+const STORAGE={config:"jetonbar_config_v3",session:"jetonbar_session_v3",orders:"jetonbar_orders_v3"};
+const sections={drinks:[{key:"jupiler",name:"Jupiler",price:2},{key:"triple",name:"Triple",price:3},{key:"soft",name:"Soft",price:1},{key:"eau",name:"Eau",price:1},{key:"vin",name:"Vin",price:2},{key:"cocktail",name:"Cocktail",price:3}],cups:[{key:"nouveau_gobelet",name:"Nouveau gobelet",price:1},{key:"retour_gobelet",name:"Retour gobelet",price:-1}]};
+const allProducts=[...sections.drinks,...sections.cups];let quantities=allProducts.map(()=>0),config=null,session=null,orders=[],pendingMode=null,syncing=false,scannerStream=null,scanTimer=null;
+const $=id=>document.getElementById(id);function show(id,on=true){$(id).classList.toggle("show",on)}
+function decodeBase64Url(value){const base64=value.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((value.length+3)%4);const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));return new TextDecoder().decode(bytes)}
+function parseConfigLink(raw){const url=new URL(raw,location.href);const hash=new URLSearchParams(url.hash.slice(1));const encoded=hash.get("config");if(!encoded)throw new Error("Le lien ne contient pas de configuration");const parsed=JSON.parse(decodeBase64Url(encoded));if(!parsed.endpoint||!parsed.code)throw new Error("Configuration incomplète");const endpoint=new URL(parsed.endpoint);if(endpoint.protocol!=="https:")throw new Error("L’adresse du serveur doit utiliser HTTPS");return{endpoint:endpoint.toString(),code:String(parsed.code)}}
+function readConfigFromUrl(){if(!location.hash.includes("config="))return false;try{config=parseConfigLink(location.href);localStorage.setItem(STORAGE.config,JSON.stringify(config));history.replaceState(null,"",location.pathname+location.search);pendingMode="festival";return true}catch(e){alert("QR invalide : "+e.message);history.replaceState(null,"",location.pathname+location.search);return false}}
+function load(){config=JSON.parse(localStorage.getItem(STORAGE.config)||"null");session=JSON.parse(localStorage.getItem(STORAGE.session)||"null");orders=JSON.parse(localStorage.getItem(STORAGE.orders)||"[]");const fromQr=readConfigFromUrl();if(fromQr&&!session)openName("festival");else if(!session)openStart();render()}
+function save(){localStorage.setItem(STORAGE.session,JSON.stringify(session));localStorage.setItem(STORAGE.orders,JSON.stringify(orders))}
+function openStart(){stopScanner();["nameModal","manualModal","scanModal","closeModal"].forEach(id=>show(id,false));$("savedConfigBtn").classList.toggle("hidden",!config);show("startModal",true)}
+function openName(mode){pendingMode=mode;show("startModal",false);show("manualModal",false);show("scanModal",false);$("selectedMode").textContent=mode==="festival"?"Session liée au Festival":"Session locale avec CSV";show("nameModal",true)}
+function productLabel(p){const sign=p.price>0?"+":"",unit=Math.abs(p.price)===1?"jeton":"jetons";return`${p.name} (${sign}${p.price} ${unit})`}
+function createRow(p,i){const row=document.createElement("div");row.className="item";const n=document.createElement("div");n.className="name";n.textContent=productLabel(p);const m=document.createElement("button");m.className="minus";m.textContent="−";m.onclick=()=>{if(quantities[i]>0){quantities[i]--;render()}};const q=document.createElement("div");q.className="qty";q.textContent=quantities[i];const plus=document.createElement("button");plus.className="plus";plus.textContent="+";plus.onclick=()=>{quantities[i]++;render()};row.append(n,m,q,plus);return row}
+function currentTotal(){return allProducts.reduce((s,p,i)=>s+p.price*quantities[i],0)}
+function setStatus(msg,type=""){const e=$("configStatus");e.className=`status ${type}`.trim();e.textContent=msg}
+function render(){const dl=$("drinksList"),cl=$("cupsList");dl.innerHTML="";cl.innerHTML="";sections.drinks.forEach((p,i)=>dl.appendChild(createRow(p,i)));sections.cups.forEach((p,i)=>cl.appendChild(createRow(p,sections.drinks.length+i)));const t=currentTotal();$("total").textContent=`${t} ${Math.abs(t)===1?"jeton":"jetons"}`;const c=orders.length;$("stats").textContent=`${c} commande${c===1?"":"s"} enregistrée${c===1?"":"s"} sur ce téléphone`;$("sessionInfo").textContent=session?`Bénévole : ${session.firstName} ${session.lastName} — ${session.mode==="festival"?"Festival":"Local / CSV"} — début ${new Date(session.startedAt).toLocaleString("fr-BE")}`:"Aucune session active";
+ if(!session)setStatus("Choisis un type de session pour commencer.","warn");else if(session.mode==="local")setStatus("📄 Session locale — aucune donnée ne sera envoyée au Festival.","local");else if(!navigator.onLine)setStatus("📴 Hors ligne — les commandes restent sur le téléphone.","warn");else setStatus("✅ Session Festival configurée — synchronisation disponible.","ok");
+ const active=!!session;$("validateBtn").disabled=!active||syncing;$("syncBtn").classList.toggle("hidden",!session||session.mode!=="festival");$("csvBtn").classList.toggle("hidden",!session||session.mode!=="local");$("syncBtn").disabled=!active||!orders.length||syncing;$("csvBtn").disabled=!active||!orders.length||syncing;$("closeBtn").disabled=!active||!orders.length||syncing;$("newSessionBtn").disabled=syncing}
+function validateOrder(){if(!session)return;if(quantities.every(q=>q===0))return alert("Aucun article sélectionné.");const o={timestamp:new Date().toISOString(),total:currentTotal()};allProducts.forEach((p,i)=>o[p.key]=quantities[i]);orders.push(o);quantities=allProducts.map(()=>0);save();render()}
+function buildPayload(){if(!session||session.mode!=="festival")throw new Error("Cette session n’est pas liée au Festival");if(!orders.length)throw new Error("Aucune commande à envoyer");return{session:{session_reference:session.id,prenom:session.firstName,nom:session.lastName,date_debut:session.startedAt,date_fin:new Date().toISOString()},commandes:orders.map(o=>({date_heure:o.timestamp,jupiler:Number(o.jupiler||0),triple:Number(o.triple||0),soft:Number(o.soft||0),eau:Number(o.eau||0),vin:Number(o.vin||0),cocktail:Number(o.cocktail||0),nouveau_gobelet:Number(o.nouveau_gobelet||0),retour_gobelet:Number(o.retour_gobelet||0),total_jetons:Number(o.total||0)}))}}
+async function sendSession(){if(!config)throw new Error("Configuration Festival absente");syncing=true;render();setStatus("⏳ Envoi de la session…","warn");try{const r=await fetch(config.endpoint,{method:"POST",headers:{"Content-Type":"application/json","x-jetonbar-code":config.code},body:JSON.stringify(buildPayload())});let result=null;try{result=await r.json()}catch{}if(!r.ok||!result?.success)throw new Error(result?.error||`Erreur HTTP ${r.status}`);setStatus(`✅ Session envoyée : ${result.nombre_commandes} commande(s), ${result.total_jetons} jeton(s)`,"ok");return result}catch(e){setStatus("❌ Envoi impossible — données conservées sur le téléphone","error");throw e}finally{syncing=false;render()}}
+function esc(v){return`"${String(v??"").replaceAll('"','""')}"`}
+function makeCSVFile(){const headers=["session_id","mode","prenom","nom","date_heure",...allProducts.map(p=>p.key),"total_jetons"];const rows=orders.map(o=>[session.id,session.mode,session.firstName,session.lastName,new Date(o.timestamp).toLocaleString("fr-BE"),...allProducts.map(p=>o[p.key]||0),o.total]);const csv="\uFEFF"+[headers,...rows].map(r=>r.map(esc).join(";")).join("\n");const s=new Date(session.startedAt).toISOString().slice(0,16).replace("T","_").replace(":","h"),safe=x=>x.replace(/[^a-zA-Z0-9À-ÿ_-]+/g,"_");return new File([csv],`JetonBar_${s}_${safe(session.firstName)}_${safe(session.lastName)}.csv`,{type:"text/csv;charset=utf-8"})}
+async function shareCSV(){if(!orders.length){alert("Aucune commande à exporter.");return false}const f=makeCSVFile();if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({title:"Export JetonBar",text:"Fichier CSV de la session JetonBar",files:[f]});return true}catch(e){if(e.name==="AbortError")return false}}const u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=f.name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true}
+function clearSession(){session=null;orders=[];quantities=allProducts.map(()=>0);localStorage.removeItem(STORAGE.session);localStorage.removeItem(STORAGE.orders);$("firstName").value="";$("lastName").value="";render();openStart()}
+async function startScanner(){show("startModal",false);show("scanModal",true);$("scannerMessage").textContent="Démarrage de la caméra…";if(!("BarcodeDetector" in window)){ $("scannerMessage").textContent="Le scanner intégré n’est pas disponible sur ce navigateur. Scanne le QR avec l’appareil photo du téléphone et ouvre le lien, ou colle ce lien ci-dessous.";return}try{scannerStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});$("scannerVideo").srcObject=scannerStream;await $("scannerVideo").play();const detector=new BarcodeDetector({formats:["qr_code"]});$("scannerMessage").textContent="Présente le QR devant la caméra.";const scan=async()=>{if(!scannerStream)return;try{const codes=await detector.detect($("scannerVideo"));if(codes.length){applyQrLink(codes[0].rawValue);return}}catch{}scanTimer=setTimeout(scan,250)};scan()}catch(e){$("scannerMessage").textContent="Impossible d’accéder à la caméra. Utilise l’appareil photo du téléphone ou colle le lien du QR ci-dessous."}}
+function stopScanner(){if(scanTimer)clearTimeout(scanTimer);scanTimer=null;if(scannerStream){scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null}$("scannerVideo").srcObject=null}
+function applyQrLink(raw){try{config=parseConfigLink(raw.trim());localStorage.setItem(STORAGE.config,JSON.stringify(config));stopScanner();show("scanModal",false);openName("festival")}catch(e){alert("QR ou lien invalide : "+e.message)}}
+$("savedConfigBtn").onclick=()=>openName("festival");$("scanConfigBtn").onclick=startScanner;$("manualConfigBtn").onclick=()=>{show("startModal",false);$("endpointInput").value=config?.endpoint||"";$("codeInput").value="";show("manualModal",true)};$("localSessionBtn").onclick=()=>openName("local");
+$("saveManualBtn").onclick=()=>{try{const endpoint=new URL($("endpointInput").value.trim());if(endpoint.protocol!=="https:")throw new Error("HTTPS requis");const code=$("codeInput").value.trim();if(!code)throw new Error("Code festival absent");config={endpoint:endpoint.toString(),code};localStorage.setItem(STORAGE.config,JSON.stringify(config));openName("festival")}catch(e){alert("Configuration invalide : "+e.message)}};$("cancelManualBtn").onclick=openStart;$("cancelScanBtn").onclick=()=>{stopScanner();show("scanModal",false);openStart()};$("useQrLinkBtn").onclick=()=>applyQrLink($("qrLinkInput").value);$("backToModeBtn").onclick=()=>{show("nameModal",false);openStart()};
+$("startSessionBtn").onclick=()=>{const firstName=$("firstName").value.trim(),lastName=$("lastName").value.trim();if(!firstName||!lastName)return alert("Merci d’indiquer le prénom et le nom.");if(pendingMode==="festival"&&!config)return alert("Configuration Festival absente.");session={id:crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`,mode:pendingMode,firstName,lastName,startedAt:new Date().toISOString()};orders=[];quantities=allProducts.map(()=>0);save();show("nameModal",false);render()};
+$("validateBtn").onclick=validateOrder;$("syncBtn").onclick=async()=>{try{await sendSession();alert("Synchronisation réussie. La session reste ouverte.")}catch(e){alert("Synchronisation impossible : "+e.message)}};$("csvBtn").onclick=shareCSV;
+$("closeBtn").onclick=()=>{if(!orders.length)return alert("Aucune commande enregistrée.");if(session.mode==="festival"){$("closeText").textContent="La session et toutes ses commandes vont être envoyées au serveur du Festival.";$("closeNote").textContent="En cas d’échec, les données resteront sur le téléphone.";$("confirmCloseBtn").textContent="Envoyer et clôturer"}else{$("closeText").textContent="Le fichier CSV va être créé ou partagé avant la clôture.";$("closeNote").textContent="Ne confirme la nouvelle session qu’après avoir sauvegardé ou envoyé le fichier.";$("confirmCloseBtn").textContent="Créer le CSV et clôturer"}show("closeModal",true)};$("cancelCloseBtn").onclick=()=>show("closeModal",false);
+$("confirmCloseBtn").onclick=async()=>{const b=$("confirmCloseBtn");b.disabled=true;try{if(session.mode==="festival"){await sendSession();alert("Session envoyée et clôturée avec succès.");show("closeModal",false);clearSession()}else{const done=await shareCSV();if(!done)return;if(!confirm("Le CSV a été créé ou partagé. Clôturer maintenant cette session ?"))return;show("closeModal",false);clearSession()}}catch(e){alert("La session n’a pas été clôturée. Les données sont conservées.\n\n"+e.message)}finally{b.disabled=false}};
+$("newSessionBtn").onclick=()=>{if(session&&orders.length&&!confirm("Changer de session effacera les commandes locales actuelles. Continuer ?"))return;clearSession()};window.addEventListener("online",render);window.addEventListener("offline",render);if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));load();
+</script></body></html>
