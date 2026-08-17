@@ -1,9 +1,0 @@
-{
-  "name": "Festival Les Granges",
-  "short_name": "Les Granges",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#fff8f9",
-  "theme_color": "#ef2f5a",
-  "lang": "fr"
-}
