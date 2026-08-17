@@ -1,103 +1,457 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
-  <title>JetonBar</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f4f6;color:#111827}.app{max-width:620px;margin:auto;padding:14px}h1{text-align:center;margin:6px 0 4px}.version{text-align:center;font-size:12px;color:#6b7280;margin-bottom:10px}.session-info,.stats,.status{background:#fff;border:1px solid #d1d5db;border-radius:12px;padding:10px 12px;margin-bottom:14px}.status{font-size:14px;line-height:1.35}.status.ok{background:#ecfdf5;border-color:#86efac;color:#166534}.status.warn{background:#fffbeb;border-color:#fcd34d;color:#92400e}.status.error{background:#fef2f2;border-color:#fca5a5;color:#991b1b}.status.local{background:#eff6ff;border-color:#93c5fd;color:#1e40af}.section-title{margin:18px 0 8px;padding:10px 12px;border-radius:10px;background:#111827;color:#fff;font-size:19px;font-weight:800}.list{display:grid;gap:9px}.item{display:grid;grid-template-columns:minmax(0,1fr) 54px 45px 54px;gap:8px;align-items:center;padding:10px;border:1px solid #d1d5db;border-radius:12px;background:#fff}.name{min-width:0;font-size:17px;font-weight:700;line-height:1.2}button{min-height:48px;border:0;border-radius:10px;font-size:17px;font-weight:800;cursor:pointer;touch-action:manipulation;padding:8px 12px}button:disabled{opacity:.55;cursor:not-allowed}.minus,.plus{font-size:25px;padding:0}.minus{background:#fee2e2;color:#991b1b}.plus{background:#dcfce7;color:#166534}.qty{text-align:center;font-size:22px;font-weight:800}.total-card{margin-top:20px;padding:18px;border-radius:14px;background:#111827;color:#fff;text-align:center}.total-label{font-size:15px;text-transform:uppercase;letter-spacing:1px;opacity:.8}.total{margin-top:6px;font-size:42px;font-weight:900}.actions{display:grid;gap:10px;margin-top:12px}.validate{background:#16a34a;color:#fff}.sync{background:#2563eb;color:#fff}.close{background:#f59e0b;color:#111827}.danger{background:#dc2626;color:#fff}.secondary{background:#e5e7eb;color:#111827}.outline{background:#fff;color:#111827;border:2px solid #d1d5db}.stats{text-align:center;font-weight:700;margin-top:12px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000;overflow:auto}.modal.show{display:flex}.modal-card{width:min(100%,450px);max-height:calc(100vh - 36px);overflow:auto;background:#fff;border-radius:16px;padding:18px}.modal-card h2{margin-top:0}.choice-grid{display:grid;gap:10px}.choice{padding:14px;text-align:left;min-height:68px}.choice strong{display:block;font-size:17px}.choice span{display:block;font-size:13px;font-weight:normal;margin-top:3px;color:#4b5563}label{display:block;font-weight:700;margin:10px 0 5px}input{width:100%;padding:12px;border:1px solid #9ca3af;border-radius:10px;font-size:16px}.modal-actions{display:grid;gap:8px;margin-top:16px}.small{font-size:13px;color:#6b7280;line-height:1.4}.mode-badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#e5e7eb;font-size:12px;font-weight:800;margin-bottom:8px}video{width:100%;max-height:330px;background:#111;border-radius:12px}.hidden{display:none!important}@media(max-width:420px){.item{grid-template-columns:minmax(0,1fr) 48px 38px 48px;gap:6px;padding:8px}.name{font-size:15px}button{min-height:44px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ef2f5a">
+<title>Festival Les Granges</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+ --bg:#fff8f9;--paper:#fffefe;--paper2:#fff9fa;--pink:#ed3158;--pink2:#f17891;
+ --green:#1b7048;--green2:#77bd8a;--yellow:#f6b719;--purple:#7658b7;--blue:#247d94;
+ --orange:#e58c0d;--red:#d93945;--ink:#202031;--muted:#71666c;--line:#efced6;
+ --shadow:0 8px 28px rgba(89,34,50,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+body{
+ background:
+ linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)),
+ linear-gradient(135deg,#f9e0e7 0%,#fff7f8 48%,#f8e5eb 100%);
+}
+body::before{
+ content:"";position:fixed;inset:0;z-index:-3;opacity:.34;pointer-events:none;
+ background:
+   radial-gradient(ellipse at 18% 18%,rgba(244,153,185,.36) 0 4%,transparent 5%),
+   radial-gradient(ellipse at 70% 11%,rgba(248,191,209,.40) 0 4%,transparent 5%),
+   radial-gradient(ellipse at 46% 70%,rgba(241,161,188,.30) 0 4%,transparent 5%),
+   radial-gradient(ellipse at 86% 70%,rgba(249,198,215,.30) 0 3%,transparent 4%);
+ background-size:160px 130px,220px 175px,185px 155px,150px 125px;
+}
+body::after{
+ content:"";position:fixed;left:0;right:0;bottom:0;height:108px;
+ background:url("assets/flowers.svg") center bottom/cover no-repeat;
+ z-index:-2;pointer-events:none
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:590px;margin:auto;min-height:100vh;padding:8px 12px 112px;position:relative}
+.view{display:none}.view.active{display:block}
+.hero{text-align:center;padding:12px 0 4px;position:relative}
+.logo{width:min(170px,52vw);max-height:122px;object-fit:contain}
+.logo.small{width:128px;max-height:88px}
+.bee{position:absolute;right:12px;top:42px;width:57px}
+.event-date{font-size:21px;font-weight:950;margin-top:3px;color:#472333}
+.event-place{font-size:19px;font-weight:950;color:#472333;margin-bottom:8px}
+.welcome{margin:5px auto 7px;max-width:500px;text-align:center}
+.welcome h1{font-size:26px;color:var(--pink);margin:0 0 3px;text-transform:uppercase}
+.welcome p{margin:0;color:#40343a}
+.card{
+ background:rgba(255,254,254,.975);
+ border:1px solid #efcfd6;
+ border-radius:13px;
+ padding:14px;
+ margin:9px 0;
+ box-shadow:0 3px 12px rgba(93,41,58,.045);
+}
+.card.flat{box-shadow:0 5px 18px rgba(113,58,74,.045);background:rgba(255,253,253,.96)}
+.card-title{color:var(--pink);font-weight:950;text-transform:uppercase;font-size:15px;margin:0 0 11px}
+.label{display:block;font-size:11px;font-weight:900;text-transform:uppercase;margin:9px 0 4px;color:#4d4549}
+.input,.select{
+ width:100%;height:47px;border-radius:9px;border:1px solid #e1c7cd;background:#fff;
+ padding:0 12px;color:var(--ink);outline:none
+}
+.input:focus,.select:focus{border-color:var(--pink);box-shadow:0 0 0 3px rgba(239,47,90,.1)}
+.posts{display:grid;gap:5px}
+.post{
+ display:flex;align-items:center;gap:10px;min-height:50px;width:100%;border-radius:9px;
+ border:1px solid #ead1d7;background:#fff;padding:7px 11px;text-align:left;font-weight:900;color:var(--green)
+}
+.post .icon{width:30px;text-align:center;font-size:21px}.post .arrow{margin-left:auto;font-size:22px;color:#222}
+.post.selected{border:2px solid var(--pink);background:#fff3f6}
+.post.snack{color:var(--red)}.post.burger{color:#d98a00}.post.tickets{color:var(--purple)}.post.general{color:var(--blue)}
+.btn{width:100%;min-height:50px;border-radius:9px;border:0;font-weight:950;text-transform:uppercase}
+.btn.primary{background:var(--pink);color:#fff;box-shadow:0 5px 14px rgba(239,47,90,.18)}
+.btn.green{background:var(--green);color:#fff}
+.btn.outline{background:rgba(255,255,255,.87);color:var(--pink);border:1px solid var(--pink)}
+.btn.danger{background:#fff;color:var(--red);border:1px solid var(--red)}
+.btn.soft{background:#fff;color:#4a3941;border:1px solid #e8d2d7;text-transform:none}
+.actions{display:grid;gap:8px;margin:11px 0}
+.thanks{text-align:center;font-size:13px;margin:12px 0;color:#4b3d43}
+.top{display:flex;justify-content:center;align-items:center;position:relative;padding:4px 0 0}
+.top .bee{top:27px}
+.post-select{font-weight:950;color:#851c37;text-transform:uppercase;margin:2px auto 10px;display:block;max-width:330px;border:1px solid #ebb7c3;background:#fff}
+.products{display:grid}
+.product{
+ display:grid;grid-template-columns:minmax(0,1fr) 43px 36px 43px;gap:6px;align-items:center;
+ min-height:48px;border-bottom:1px solid #f2e1e5
+}
+.product:last-child{border-bottom:0}
+.name{font-weight:750;font-size:15px}.price{color:var(--pink);font-size:12px;font-weight:750}
+.pm{height:37px;border-radius:7px;background:#fff;border:1px solid #efbdc8;color:var(--pink);font-size:21px;font-weight:950}
+.pm.plus{color:var(--green);border-color:#b8dbc5}.qty{text-align:center;font-weight:950}
+.totalbox{
+ display:flex;align-items:center;justify-content:center;gap:16px;padding:10px;border:1px solid #dfbdc5;border-radius:9px;background:#fff;
+ text-transform:uppercase;font-weight:950;margin:10px 0
+}
+.totalbox strong{font-size:37px;color:var(--pink)}
+.session-footer{
+ display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #ead5da;
+ background:rgba(255,255,255,.88);border-radius:9px;padding:10px 12px;font-size:12px
+}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#51a742;margin-right:6px}
+.settings-link{display:flex;align-items:center;gap:9px;padding:0 15px;text-align:left}.settings-link span:last-child{margin-left:auto;font-size:21px}
+.page-title{display:flex;align-items:center;gap:11px;color:var(--pink);font-weight:950;text-transform:uppercase;font-size:20px;padding:9px 0 6px}
+.back{border:0;background:transparent;color:var(--pink);font-size:30px;padding:0}
+.info-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #f1e2e5;font-size:14px}
+.info-row:last-child{border-bottom:0}.info-row strong{text-align:right}
+.sync{text-align:center;padding:5px 3px}.sync .cloud{font-size:38px;color:var(--green)}.sync .main{font-weight:950}.sync .sub{font-size:12px;color:var(--muted);margin:5px}
+.ticket-title{text-align:center;color:var(--pink);font-weight:950;text-transform:uppercase;font-size:22px;margin:4px 0}
+.ticket-sub{text-align:center;color:#733446;font-size:12px;font-weight:900;text-transform:uppercase}
+.ticket-count{display:grid;grid-template-columns:58px 1fr 58px;gap:12px;align-items:center;margin:10px 0}
+.ticket-count input{text-align:center;font-size:34px;font-weight:950;height:63px}
+.ticket-count button{height:54px}
+.price-pill{display:flex;justify-content:center;align-items:center;gap:12px;font-size:13px}.price-pill strong{background:#fff;border:1px solid #e3c8cf;padding:7px 13px;border-radius:99px}
+.pay-tabs{display:grid;grid-template-columns:1fr 1fr}
+.pay{height:56px;border:1px solid #e3c9cf;background:#fff;font-weight:900;color:#4d3b42}
+.pay:first-child{border-radius:9px 0 0 9px}.pay:last-child{border-radius:0 9px 9px 0}
+.pay.active{background:var(--pink);color:#fff;border-color:var(--pink)}
+.cashbox{display:none;margin-top:12px}.cashbox.show{display:block}
+.change{font-size:30px;font-weight:950;color:var(--green);text-align:right;padding:9px 0}
+.quick-cash{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.quick-cash button{height:46px;border:1px solid #e4c9d0;background:#fff;border-radius:8px;font-weight:900}
+.admin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 0}
+.kpi{background:#fff;border:1px solid #efd1d8;border-radius:11px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(95,40,56,.035)}
+.kpi small{display:block;font-weight:950;text-transform:uppercase;color:var(--pink)}.kpi strong{font-size:27px}
+.toolbar{display:flex;gap:8px}.toolbar .select{flex:1}.toolbar .btn{width:auto;padding:0 13px;min-height:45px}
+.chart{background:#fff;border:1px solid #efd1d8;border-radius:11px;padding:12px;margin:9px 0;box-shadow:0 2px 8px rgba(95,40,56,.03)}
+.chart h3{font-size:13px;color:var(--green);margin:0 0 11px;text-transform:uppercase}
+.barrows{display:grid;gap:9px}.barrow{display:grid;grid-template-columns:105px 1fr 48px;gap:7px;align-items:center;font-size:12px}
+.track{height:8px;background:#f4e8eb;border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--green);border-radius:99px}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:8px}.list div{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.linegraph{height:145px;border-left:1px solid #e4d4d8;border-bottom:1px solid #e4d4d8;position:relative}.linegraph svg{position:absolute;inset:0;width:100%;height:100%}
+.modal{position:fixed;inset:0;background:rgba(35,25,30,.48);display:none;align-items:center;justify-content:center;padding:18px;z-index:40}
+.modal.show{display:flex}.modalbox{width:min(100%,420px);background:#fff;border-radius:15px;padding:20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.modalbox h3{color:var(--pink);margin-top:0}.modalbuttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.note{font-size:12px;color:var(--muted)}
+
+.page-decor{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.decor-cloud-left{position:absolute;width:155px;left:-48px;top:52px;opacity:.96}
+.decor-cloud-right{position:absolute;width:125px;right:-33px;top:155px;opacity:.96}
+.decor-sun{position:absolute;width:210px;right:-62px;top:16px;opacity:.98}
+.decor-bee{position:absolute;width:66px;right:10px;top:195px;opacity:.96}
+.hero-poster{min-height:335px;padding-top:22px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.hero-poster .logo{width:min(190px,55vw);max-height:165px;margin-top:25px}
+.hero-poster .event-date{margin-top:16px;font-size:22px}
+.hero-poster .event-place{font-size:20px}
+.hero-field{height:110px;margin:4px -12px -78px;background:url("assets/flowers.svg") center bottom/cover no-repeat}
+.screen-header-decor{
+ position:relative;min-height:105px;margin:0 -12px 6px;padding:8px 12px 0;overflow:hidden
+}
+.screen-header-decor .small-logo{display:block;width:145px;max-height:92px;margin:0 auto;position:relative;z-index:2}
+.screen-header-decor .cloud-a{position:absolute;width:105px;left:-34px;top:22px;opacity:.95}
+.screen-header-decor .cloud-b{position:absolute;width:95px;right:-30px;top:38px;opacity:.92}
+.screen-header-decor .sun-a{position:absolute;width:115px;right:-20px;top:-18px;opacity:.95}
+.screen-header-decor .bee-a{position:absolute;width:48px;right:24px;bottom:0;z-index:3}
+.decorative-bottom{height:70px;margin:10px -12px -112px;background:url("assets/flowers.svg") center bottom/cover no-repeat;pointer-events:none}
+
+
+.prod-main{display:flex;align-items:center;gap:9px;min-width:0}
+.prod-icon{width:24px;height:24px;flex:0 0 24px;object-fit:contain}
+.prod-text{min-width:0}
+.gobelet-icon{width:24px;height:24px;object-fit:contain;flex:0 0 24px}
+
+
+#start .hero-poster{padding-bottom:0}
+#start .welcome{margin-top:2px}
+#start .welcome h1{margin-top:0}
+
+@media(max-width:410px){
+ .app{padding-left:9px;padding-right:9px}.card{padding:12px}.product{grid-template-columns:minmax(0,1fr) 40px 32px 40px;gap:4px}.name{font-size:14px}.price{font-size:11px}
+ .barrow{grid-template-columns:84px 1fr 42px}
+}
+</style>
 </head>
 <body>
 <main class="app">
-  <h1>JetonBar</h1><div class="version">v3.0 hybride</div>
-  <div id="configStatus" class="status"></div><div id="sessionInfo" class="session-info"></div>
-  <div class="section-title">🍺 Boissons</div><section id="drinksList" class="list"></section>
-  <div class="section-title">🥤 Gobelets</div><section id="cupsList" class="list"></section>
-  <section class="total-card"><div class="total-label">Total de la commande</div><div id="total" class="total">0 jeton</div></section>
-  <div class="actions"><button id="validateBtn" class="validate">Valider la commande</button></div>
-  <div id="stats" class="stats">0 commande enregistrée</div>
-  <div class="actions">
-    <button id="syncBtn" class="sync">Synchroniser maintenant</button>
-    <button id="csvBtn" class="sync">Exporter / partager le CSV</button>
-    <button id="closeBtn" class="close">Clôturer la session</button>
-    <button id="newSessionBtn" class="secondary">Changer de session</button>
+<section id="start" class="view active">
+ <div class="hero hero-poster">
+  <div class="page-decor">
+    <img class="decor-cloud-left" src="assets/cloud.svg" alt="">
+    <img class="decor-sun" src="assets/cloud-sun.svg" alt="">
+    <img class="decor-cloud-right" src="assets/cloud.svg" alt="">
+    <img class="decor-bee" src="assets/abeilles-les-granges.svg" alt="">
   </div>
+  <img class="logo" src="assets/logo-les-granges-26.svg" alt="Les Granges">
+  <div class="event-date">21 &amp; 22 Août 2026</div>
+  <div class="event-place">Abolens</div>
+  <div class="hero-field"></div>
+ </div>
+ <div class="welcome"><h1>Bienvenue !</h1></div>
+ <div class="card">
+  <label class="label">Prénom</label><input id="first" class="input" placeholder="Votre prénom">
+  <label class="label">Nom</label><input id="last" class="input" placeholder="Votre nom">
+  <div class="card-title" style="color:#30252a;text-align:center;margin-top:18px">Choisis ton poste</div>
+  <div id="posts" class="posts"></div>
+  <div class="actions"><button id="startBtn" class="btn primary">Démarrer la session ›</button></div>
+  <div class="thanks">❤️ Merci pour ton aide et bon festival !</div>
+ </div>
+</section>
+
+<section id="bar" class="view">
+ <div class="screen-header-decor">
+  <img class="cloud-a" src="assets/cloud.svg" alt="">
+  <img class="sun-a" src="assets/cloud-sun.svg" alt="">
+  <img class="cloud-b" src="assets/cloud.svg" alt="">
+  <img class="small-logo" src="assets/logo-les-granges-26.svg" alt="Les Granges">
+  <img class="bee-a" src="assets/abeilles-les-granges.svg" alt="">
+ </div>
+ <select id="barSelect" class="select post-select"></select>
+ <div class="card flat"><div class="card-title">🥤 Boissons</div><div id="drinks" class="products"></div></div>
+ <div class="card flat"><div class="card-title">🥛 Gobelets</div><div id="cups" class="products"></div></div>
+ <div class="totalbox"><span>Total</span><strong id="barTotal">0</strong><span>jetons</span></div>
+ <div class="actions">
+  <button id="validateOrder" class="btn primary">✓ Valider commande</button>
+  <button id="settingsBar" class="btn soft settings-link">⚙️ <span>Paramètres de session</span><span>›</span></button>
+  <button id="closeBar" class="btn danger">↪ Fermer la session</button>
+ </div>
+ <div class="session-footer"><span><span class="dot"></span>Enregistré localement</span><strong id="barVolunteer"></strong></div><div class="decorative-bottom"></div>
+</section>
+
+<section id="tickets" class="view">
+ <div class="screen-header-decor">
+  <img class="cloud-a" src="assets/cloud.svg" alt="">
+  <img class="sun-a" src="assets/cloud-sun.svg" alt="">
+  <img class="cloud-b" src="assets/cloud.svg" alt="">
+  <img class="small-logo" src="assets/logo-les-granges-26.svg" alt="Les Granges">
+  <img class="bee-a" src="assets/abeilles-les-granges.svg" alt="">
+ </div>
+ <select id="ticketSelect" class="select post-select"></select>
+ <div class="ticket-title"><img src="assets/ticket.svg" style="width:31px;vertical-align:middle;margin-right:7px">Tickets</div><div class="ticket-sub">Vente de jetons</div>
+ <div class="card">
+  <div class="card-title" style="text-align:center">Nombre de jetons</div>
+  <div class="ticket-count"><button id="tminus" class="pm">−</button><input id="tqty" class="input" type="number" min="0" value="0"><button id="tplus" class="pm plus">+</button></div>
+  <div class="price-pill">Prix / jeton <strong>1,50 €</strong></div>
+  <div class="totalbox" style="margin-top:17px"><span>Total à payer</span><strong id="ticketTotal">0,00</strong><span>€</span></div>
+ </div>
+ <div class="card">
+  <div class="card-title">Paiement</div>
+  <div class="pay-tabs"><button class="pay" data-method="cash">💵 Cash</button><button class="pay" data-method="card">💳 Carte</button></div>
+  <div id="cashbox" class="cashbox">
+    <label class="label">Montant reçu</label><input id="received" class="input" type="number" min="0" step="0.01" placeholder="Ex. 50">
+    <div class="change" id="change">À rendre : 0,00 €</div>
+  </div>
+ </div>
+ <div class="actions">
+  <button id="validateTicket" class="btn primary">✓ Valider la vente</button>
+  <button id="settingsTickets" class="btn soft settings-link">⚙️ <span>Paramètres de session</span><span>›</span></button>
+  <button id="closeTickets" class="btn danger">↪ Fermer la session</button>
+ </div>
+ <div class="session-footer"><span><span class="dot"></span>Enregistré localement</span><strong id="ticketVolunteer"></strong></div><div class="decorative-bottom"></div>
+</section>
+
+<section id="settings" class="view">
+ <div class="page-decor"><img class="decor-cloud-right" src="assets/cloud.svg" alt=""><img class="decor-bee" src="assets/abeilles-les-granges.svg" alt=""></div>
+ <div class="page-title"><button id="settingsBack" class="back">←</button>Paramètres de session</div>
+ <div class="card"><div class="card-title">Bénévole</div><div class="info-row"><strong id="settingsVolunteer"></strong><button id="editName" class="btn outline" style="width:auto;min-height:38px;padding:0 14px">Modifier</button></div></div>
+ <div class="card">
+  <div class="card-title">Synchronisation des commandes</div>
+  <div class="sync"><div class="cloud">☁︎</div><div class="main">Connexion à la base non activée</div><div class="sub">La synchronisation Supabase sera ajoutée à l'étape suivante.</div></div>
+  <button class="btn green" disabled style="opacity:.48">⟳ Synchroniser maintenant</button>
+ </div>
+ <div class="card">
+  <div class="card-title">Informations de session</div>
+  <div class="info-row"><span>Début de session</span><strong id="startInfo">—</strong></div>
+  <div class="info-row"><span>Commandes enregistrées</span><strong id="ordersInfo">0</strong></div>
+  <div class="info-row"><span>Jetons consommés (bars)</span><strong id="tokensInfo">0</strong></div>
+  <div class="info-row"><span>Jetons vendus (tickets)</span><strong id="soldInfo">0</strong></div>
+  <div class="info-row"><span>Total jetons</span><strong id="allTokensInfo">0</strong></div>
+ </div>
+ <div class="actions">
+  <button id="returnWork" class="btn outline">← Retour aux commandes</button>
+  <button id="adminAccess" class="btn soft settings-link">🔒 <span><strong>Accès administrateur</strong><br><small>Tableau de bord et statistiques</small></span><span>›</span></button>
+ </div>
+ <div class="decorative-bottom"></div>
+</section>
+
+<section id="admin" class="view">
+ <div class="page-decor"><img class="decor-cloud-left" src="assets/cloud.svg" alt=""><img class="decor-bee" src="assets/abeilles-les-granges.svg" alt=""></div>
+ <div class="page-title"><button id="adminBack" class="back">←</button><div>Administration<br><small style="font-size:12px;color:var(--green)">Festival Les Granges · 21 & 22 août 2026</small></div></div>
+ <div class="toolbar"><select id="filter" class="select"><option value="all">Tous les bars</option><option>Bar Festival</option><option>Bar Petite Grange</option><option>Bar Snack</option><option>Bar Burger</option><option>Général</option><option>Tickets</option></select><button id="refresh" class="btn primary">⟳ Actualiser</button></div>
+ <div class="note" style="margin:8px 1px">Dernière actualisation : <strong id="refreshTime">—</strong></div>
+ <div class="admin-grid">
+  <div class="kpi"><small>Commandes</small><strong id="kOrders">0</strong></div>
+  <div class="kpi"><small style="color:var(--green)">Jetons consommés</small><strong id="kTokens">0</strong></div>
+  <div class="kpi"><small style="color:var(--purple)">Sessions locales</small><strong>1</strong></div>
+  <div class="kpi"><small style="color:var(--orange)">Jetons vendus</small><strong id="kSold">0</strong></div>
+ </div>
+ <div class="chart"><h3>Ventes par bar (jetons consommés)</h3><div id="barrows" class="barrows"></div></div>
+ <div class="twocol">
+  <div class="chart"><h3>Boissons</h3><div id="drinkStats" class="list"></div></div>
+  <div class="chart"><h3>Ventes de tickets</h3><div id="ticketStats" class="list"></div></div>
+ </div>
+ <div class="chart"><h3>Ventes par heure</h3><div class="linegraph"><svg id="trend" viewBox="0 0 300 140" preserveAspectRatio="none"></svg></div></div>
+ <div class="chart"><h3>Gobelets</h3><div id="cupStats" class="list"></div></div>
+ <div class="actions"><button id="exportCsv" class="btn outline">⬇ Exporter les données (CSV)</button><div class="note">Pour l'instant : données locales de ce téléphone. Après Supabase : export de toutes les commandes.</div></div>
+ <div class="decorative-bottom"></div>
+</section>
 </main>
 
-<div id="startModal" class="modal"><div class="modal-card">
-  <h2>Ouvrir une session</h2>
-  <p>Choisis comment cette session doit fonctionner.</p>
-  <div class="choice-grid">
-    <button id="savedConfigBtn" class="choice sync"><strong>Festival — configuration enregistrée</strong><span>Utiliser la configuration déjà mémorisée sur ce téléphone.</span></button>
-    <button id="scanConfigBtn" class="choice validate"><strong>Festival — scanner le QR</strong><span>Scanner le QR fourni par l’organisateur.</span></button>
-    <button id="manualConfigBtn" class="choice outline"><strong>Festival — configuration manuelle</strong><span>Saisir l’adresse du serveur et le code festival.</span></button>
-    <button id="localSessionBtn" class="choice close"><strong>Session locale — sans festival</strong><span>Aucun envoi serveur. Les commandes seront exportées en CSV.</span></button>
-  </div>
-</div></div>
-
-<div id="manualModal" class="modal"><div class="modal-card">
-  <h2>Configuration manuelle</h2>
-  <label for="endpointInput">Adresse de l’Edge Function</label><input id="endpointInput" type="url" placeholder="https://…supabase.co/functions/v1/jetonbar">
-  <label for="codeInput">Code festival</label><input id="codeInput" type="password" autocomplete="off">
-  <div class="modal-actions"><button id="saveManualBtn" class="validate">Enregistrer et continuer</button><button id="cancelManualBtn" class="secondary">Retour</button></div>
-</div></div>
-
-<div id="scanModal" class="modal"><div class="modal-card">
-  <h2>Scanner le QR de configuration</h2><video id="scannerVideo" playsinline muted></video>
-  <p id="scannerMessage" class="small">Autorise l’accès à la caméra, puis présente le QR devant l’objectif.</p>
-  <label for="qrLinkInput">Ou coller le lien contenu dans le QR</label><input id="qrLinkInput" placeholder="https://…/#config=…">
-  <div class="modal-actions"><button id="useQrLinkBtn" class="validate">Utiliser ce lien</button><button id="cancelScanBtn" class="secondary">Retour</button></div>
-</div></div>
-
-<div id="nameModal" class="modal"><div class="modal-card">
-  <h2>Identité du bénévole</h2><div id="selectedMode" class="mode-badge"></div>
-  <label for="firstName">Prénom</label><input id="firstName" autocomplete="given-name">
-  <label for="lastName">Nom</label><input id="lastName" autocomplete="family-name">
-  <div class="modal-actions"><button id="startSessionBtn" class="validate">Commencer la session</button><button id="backToModeBtn" class="secondary">Retour au choix</button></div>
-</div></div>
-
-<div id="closeModal" class="modal"><div class="modal-card">
-  <h2>Clôturer la session</h2><p id="closeText"></p><p class="small" id="closeNote"></p>
-  <div class="modal-actions"><button id="confirmCloseBtn" class="sync"></button><button id="cancelCloseBtn" class="secondary">Annuler</button></div>
-</div></div>
+<div id="closeModal" class="modal"><div class="modalbox"><h3>Fermer la session ?</h3><p>Êtes-vous sûr de vouloir quitter la session ?</p><div class="note">La synchronisation automatique sera branchée à l'étape Supabase.</div><div class="modalbuttons"><button id="cancelClose" class="btn outline">Annuler</button><button id="confirmClose" class="btn danger">Fermer</button></div></div></div>
+<div id="adminModal" class="modal"><div class="modalbox"><h3>Accès administrateur</h3><p>Le code administrateur unique sera défini avec la base de données.</p><div class="modalbuttons"><button id="cancelAdmin" class="btn outline">Annuler</button><button id="previewAdmin" class="btn green">Aperçu</button></div></div></div>
 
 <script>
-const STORAGE={config:"jetonbar_config_v3",session:"jetonbar_session_v3",orders:"jetonbar_orders_v3"};
-const sections={drinks:[{key:"jupiler",name:"Jupiler",price:2},{key:"triple",name:"Triple",price:3},{key:"soft",name:"Soft",price:1},{key:"eau",name:"Eau",price:1},{key:"vin",name:"Vin",price:2},{key:"cocktail",name:"Cocktail",price:3}],cups:[{key:"nouveau_gobelet",name:"Nouveau gobelet",price:1},{key:"retour_gobelet",name:"Retour gobelet",price:-1}]};
-const allProducts=[...sections.drinks,...sections.cups];let quantities=allProducts.map(()=>0),config=null,session=null,orders=[],pendingMode=null,syncing=false,scannerStream=null,scanTimer=null;
-const $=id=>document.getElementById(id);function show(id,on=true){$(id).classList.toggle("show",on)}
-function decodeBase64Url(value){const base64=value.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((value.length+3)%4);const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));return new TextDecoder().decode(bytes)}
-function parseConfigLink(raw){const url=new URL(raw,location.href);const hash=new URLSearchParams(url.hash.slice(1));const encoded=hash.get("config");if(!encoded)throw new Error("Le lien ne contient pas de configuration");const parsed=JSON.parse(decodeBase64Url(encoded));if(!parsed.endpoint||!parsed.code)throw new Error("Configuration incomplète");const endpoint=new URL(parsed.endpoint);if(endpoint.protocol!=="https:")throw new Error("L’adresse du serveur doit utiliser HTTPS");return{endpoint:endpoint.toString(),code:String(parsed.code)}}
-function readConfigFromUrl(){if(!location.hash.includes("config="))return false;try{config=parseConfigLink(location.href);localStorage.setItem(STORAGE.config,JSON.stringify(config));history.replaceState(null,"",location.pathname+location.search);pendingMode="festival";return true}catch(e){alert("QR invalide : "+e.message);history.replaceState(null,"",location.pathname+location.search);return false}}
-function load(){config=JSON.parse(localStorage.getItem(STORAGE.config)||"null");session=JSON.parse(localStorage.getItem(STORAGE.session)||"null");orders=JSON.parse(localStorage.getItem(STORAGE.orders)||"[]");const fromQr=readConfigFromUrl();if(fromQr&&!session)openName("festival");else if(!session)openStart();render()}
-function save(){localStorage.setItem(STORAGE.session,JSON.stringify(session));localStorage.setItem(STORAGE.orders,JSON.stringify(orders))}
-function openStart(){stopScanner();["nameModal","manualModal","scanModal","closeModal"].forEach(id=>show(id,false));$("savedConfigBtn").classList.toggle("hidden",!config);show("startModal",true)}
-function openName(mode){pendingMode=mode;show("startModal",false);show("manualModal",false);show("scanModal",false);$("selectedMode").textContent=mode==="festival"?"Session liée au Festival":"Session locale avec CSV";show("nameModal",true)}
-function productLabel(p){const sign=p.price>0?"+":"",unit=Math.abs(p.price)===1?"jeton":"jetons";return`${p.name} (${sign}${p.price} ${unit})`}
-function createRow(p,i){const row=document.createElement("div");row.className="item";const n=document.createElement("div");n.className="name";n.textContent=productLabel(p);const m=document.createElement("button");m.className="minus";m.textContent="−";m.onclick=()=>{if(quantities[i]>0){quantities[i]--;render()}};const q=document.createElement("div");q.className="qty";q.textContent=quantities[i];const plus=document.createElement("button");plus.className="plus";plus.textContent="+";plus.onclick=()=>{quantities[i]++;render()};row.append(n,m,q,plus);return row}
-function currentTotal(){return allProducts.reduce((s,p,i)=>s+p.price*quantities[i],0)}
-function setStatus(msg,type=""){const e=$("configStatus");e.className=`status ${type}`.trim();e.textContent=msg}
-function render(){const dl=$("drinksList"),cl=$("cupsList");dl.innerHTML="";cl.innerHTML="";sections.drinks.forEach((p,i)=>dl.appendChild(createRow(p,i)));sections.cups.forEach((p,i)=>cl.appendChild(createRow(p,sections.drinks.length+i)));const t=currentTotal();$("total").textContent=`${t} ${Math.abs(t)===1?"jeton":"jetons"}`;const c=orders.length;$("stats").textContent=`${c} commande${c===1?"":"s"} enregistrée${c===1?"":"s"} sur ce téléphone`;$("sessionInfo").textContent=session?`Bénévole : ${session.firstName} ${session.lastName} — ${session.mode==="festival"?"Festival":"Local / CSV"} — début ${new Date(session.startedAt).toLocaleString("fr-BE")}`:"Aucune session active";
- if(!session)setStatus("Choisis un type de session pour commencer.","warn");else if(session.mode==="local")setStatus("📄 Session locale — aucune donnée ne sera envoyée au Festival.","local");else if(!navigator.onLine)setStatus("📴 Hors ligne — les commandes restent sur le téléphone.","warn");else setStatus("✅ Session Festival configurée — synchronisation disponible.","ok");
- const active=!!session;$("validateBtn").disabled=!active||syncing;$("syncBtn").classList.toggle("hidden",!session||session.mode!=="festival");$("csvBtn").classList.toggle("hidden",!session||session.mode!=="local");$("syncBtn").disabled=!active||!orders.length||syncing;$("csvBtn").disabled=!active||!orders.length||syncing;$("closeBtn").disabled=!active||!orders.length||syncing;$("newSessionBtn").disabled=syncing}
-function validateOrder(){if(!session)return;if(quantities.every(q=>q===0))return alert("Aucun article sélectionné.");const o={timestamp:new Date().toISOString(),total:currentTotal()};allProducts.forEach((p,i)=>o[p.key]=quantities[i]);orders.push(o);quantities=allProducts.map(()=>0);save();render()}
-function buildPayload(){if(!session||session.mode!=="festival")throw new Error("Cette session n’est pas liée au Festival");if(!orders.length)throw new Error("Aucune commande à envoyer");return{session:{session_reference:session.id,prenom:session.firstName,nom:session.lastName,date_debut:session.startedAt,date_fin:new Date().toISOString()},commandes:orders.map(o=>({date_heure:o.timestamp,jupiler:Number(o.jupiler||0),triple:Number(o.triple||0),soft:Number(o.soft||0),eau:Number(o.eau||0),vin:Number(o.vin||0),cocktail:Number(o.cocktail||0),nouveau_gobelet:Number(o.nouveau_gobelet||0),retour_gobelet:Number(o.retour_gobelet||0),total_jetons:Number(o.total||0)}))}}
-async function sendSession(){if(!config)throw new Error("Configuration Festival absente");syncing=true;render();setStatus("⏳ Envoi de la session…","warn");try{const r=await fetch(config.endpoint,{method:"POST",headers:{"Content-Type":"application/json","x-jetonbar-code":config.code},body:JSON.stringify(buildPayload())});let result=null;try{result=await r.json()}catch{}if(!r.ok||!result?.success)throw new Error(result?.error||`Erreur HTTP ${r.status}`);setStatus(`✅ Session envoyée : ${result.nombre_commandes} commande(s), ${result.total_jetons} jeton(s)`,"ok");return result}catch(e){setStatus("❌ Envoi impossible — données conservées sur le téléphone","error");throw e}finally{syncing=false;render()}}
-function esc(v){return`"${String(v??"").replaceAll('"','""')}"`}
-function makeCSVFile(){const headers=["session_id","mode","prenom","nom","date_heure",...allProducts.map(p=>p.key),"total_jetons"];const rows=orders.map(o=>[session.id,session.mode,session.firstName,session.lastName,new Date(o.timestamp).toLocaleString("fr-BE"),...allProducts.map(p=>o[p.key]||0),o.total]);const csv="\uFEFF"+[headers,...rows].map(r=>r.map(esc).join(";")).join("\n");const s=new Date(session.startedAt).toISOString().slice(0,16).replace("T","_").replace(":","h"),safe=x=>x.replace(/[^a-zA-Z0-9À-ÿ_-]+/g,"_");return new File([csv],`JetonBar_${s}_${safe(session.firstName)}_${safe(session.lastName)}.csv`,{type:"text/csv;charset=utf-8"})}
-async function shareCSV(){if(!orders.length){alert("Aucune commande à exporter.");return false}const f=makeCSVFile();if(navigator.share&&navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({title:"Export JetonBar",text:"Fichier CSV de la session JetonBar",files:[f]});return true}catch(e){if(e.name==="AbortError")return false}}const u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=f.name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);return true}
-function clearSession(){session=null;orders=[];quantities=allProducts.map(()=>0);localStorage.removeItem(STORAGE.session);localStorage.removeItem(STORAGE.orders);$("firstName").value="";$("lastName").value="";render();openStart()}
-async function startScanner(){show("startModal",false);show("scanModal",true);$("scannerMessage").textContent="Démarrage de la caméra…";if(!("BarcodeDetector" in window)){ $("scannerMessage").textContent="Le scanner intégré n’est pas disponible sur ce navigateur. Scanne le QR avec l’appareil photo du téléphone et ouvre le lien, ou colle ce lien ci-dessous.";return}try{scannerStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});$("scannerVideo").srcObject=scannerStream;await $("scannerVideo").play();const detector=new BarcodeDetector({formats:["qr_code"]});$("scannerMessage").textContent="Présente le QR devant la caméra.";const scan=async()=>{if(!scannerStream)return;try{const codes=await detector.detect($("scannerVideo"));if(codes.length){applyQrLink(codes[0].rawValue);return}}catch{}scanTimer=setTimeout(scan,250)};scan()}catch(e){$("scannerMessage").textContent="Impossible d’accéder à la caméra. Utilise l’appareil photo du téléphone ou colle le lien du QR ci-dessous."}}
-function stopScanner(){if(scanTimer)clearTimeout(scanTimer);scanTimer=null;if(scannerStream){scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null}$("scannerVideo").srcObject=null}
-function applyQrLink(raw){try{config=parseConfigLink(raw.trim());localStorage.setItem(STORAGE.config,JSON.stringify(config));stopScanner();show("scanModal",false);openName("festival")}catch(e){alert("QR ou lien invalide : "+e.message)}}
-$("savedConfigBtn").onclick=()=>openName("festival");$("scanConfigBtn").onclick=startScanner;$("manualConfigBtn").onclick=()=>{show("startModal",false);$("endpointInput").value=config?.endpoint||"";$("codeInput").value="";show("manualModal",true)};$("localSessionBtn").onclick=()=>openName("local");
-$("saveManualBtn").onclick=()=>{try{const endpoint=new URL($("endpointInput").value.trim());if(endpoint.protocol!=="https:")throw new Error("HTTPS requis");const code=$("codeInput").value.trim();if(!code)throw new Error("Code festival absent");config={endpoint:endpoint.toString(),code};localStorage.setItem(STORAGE.config,JSON.stringify(config));openName("festival")}catch(e){alert("Configuration invalide : "+e.message)}};$("cancelManualBtn").onclick=openStart;$("cancelScanBtn").onclick=()=>{stopScanner();show("scanModal",false);openStart()};$("useQrLinkBtn").onclick=()=>applyQrLink($("qrLinkInput").value);$("backToModeBtn").onclick=()=>{show("nameModal",false);openStart()};
-$("startSessionBtn").onclick=()=>{const firstName=$("firstName").value.trim(),lastName=$("lastName").value.trim();if(!firstName||!lastName)return alert("Merci d’indiquer le prénom et le nom.");if(pendingMode==="festival"&&!config)return alert("Configuration Festival absente.");session={id:crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`,mode:pendingMode,firstName,lastName,startedAt:new Date().toISOString()};orders=[];quantities=allProducts.map(()=>0);save();show("nameModal",false);render()};
-$("validateBtn").onclick=validateOrder;$("syncBtn").onclick=async()=>{try{await sendSession();alert("Synchronisation réussie. La session reste ouverte.")}catch(e){alert("Synchronisation impossible : "+e.message)}};$("csvBtn").onclick=shareCSV;
-$("closeBtn").onclick=()=>{if(!orders.length)return alert("Aucune commande enregistrée.");if(session.mode==="festival"){$("closeText").textContent="La session et toutes ses commandes vont être envoyées au serveur du Festival.";$("closeNote").textContent="En cas d’échec, les données resteront sur le téléphone.";$("confirmCloseBtn").textContent="Envoyer et clôturer"}else{$("closeText").textContent="Le fichier CSV va être créé ou partagé avant la clôture.";$("closeNote").textContent="Ne confirme la nouvelle session qu’après avoir sauvegardé ou envoyé le fichier.";$("confirmCloseBtn").textContent="Créer le CSV et clôturer"}show("closeModal",true)};$("cancelCloseBtn").onclick=()=>show("closeModal",false);
-$("confirmCloseBtn").onclick=async()=>{const b=$("confirmCloseBtn");b.disabled=true;try{if(session.mode==="festival"){await sendSession();alert("Session envoyée et clôturée avec succès.");show("closeModal",false);clearSession()}else{const done=await shareCSV();if(!done)return;if(!confirm("Le CSV a été créé ou partagé. Clôturer maintenant cette session ?"))return;show("closeModal",false);clearSession()}}catch(e){alert("La session n’a pas été clôturée. Les données sont conservées.\n\n"+e.message)}finally{b.disabled=false}};
-$("newSessionBtn").onclick=()=>{if(session&&orders.length&&!confirm("Changer de session effacera les commandes locales actuelles. Continuer ?"))return;clearSession()};window.addEventListener("online",render);window.addEventListener("offline",render);if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));load();
-</script></body></html>
+const BAR_POSTS=["Bar Festival","Bar Petite Grange","Bar Snack","Bar Burger","Général"];
+const WORK_POSTS=["Bar Festival","Bar Petite Grange","Bar Snack","Bar Burger","Tickets","Général"];
+const POSTS=[
+ {name:"Bar Festival",icon:"⛺",cls:""},{name:"Bar Petite Grange",icon:"🏠",cls:""},
+ {name:"Bar Snack",icon:"🍔",cls:"snack"},{name:"Bar Burger",icon:"🍔",cls:"burger"},
+ {name:"Tickets",icon:"🎟️",cls:"tickets"},{name:"Général",icon:"📣",cls:"general"}
+];
+const drinks=[
+ {k:"jupiler",n:"Jupiler",p:2},{k:"triple",n:"Triple",p:3},{k:"soft",n:"Soft",p:1},
+ {k:"eau",n:"Eau",p:1},{k:"vin",n:"Vin",p:2},{k:"cocktail",n:"Cocktail",p:3}
+];
+const cups=[{k:"nouveau_gobelet",n:"Nouveau",p:1},{k:"retour_gobelet",n:"Retour",p:-1}];
+const TOKEN_PRICE=1.50;
+let selected="Bar Festival", payment=null;
+let qty=Object.fromEntries([...drinks,...cups].map(x=>[x.k,0]));
+let session=JSON.parse(localStorage.getItem("lg_session_v2")||"null");
+let orders=JSON.parse(localStorage.getItem("lg_orders_v2")||"[]");
+let tickets=JSON.parse(localStorage.getItem("lg_tickets_v2")||"[]");
+
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem("lg_session_v2",JSON.stringify(session));localStorage.setItem("lg_orders_v2",JSON.stringify(orders));localStorage.setItem("lg_tickets_v2",JSON.stringify(tickets))}
+function show(id){document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));$(id).classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}
+function volunteer(){return session?`${session.first} ${session.last}`:""}
+function fmt(v){return new Date(v).toLocaleString("fr-BE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}
+function renderPosts(){
+ $("posts").innerHTML="";
+ POSTS.forEach(p=>{const b=document.createElement("button");b.className=`post ${p.cls} ${selected===p.name?"selected":""}`;b.innerHTML=`<span class="icon">${p.icon}</span><span>${p.name==="Tickets"?"Tickets (vente de jetons)":p.name}</span><span class="arrow">›</span>`;b.onclick=()=>{selected=p.name;renderPosts()};$("posts").appendChild(b)})
+}
+function fillPostSelect(id){
+ const sel=$(id); sel.innerHTML="";
+ WORK_POSTS.forEach(b=>{const o=document.createElement("option");o.value=o.text=b;sel.appendChild(o)})
+}
+function iconFor(k){
+ const map={
+   jupiler:"beer.svg",triple:"wine.svg",soft:"soft.svg",eau:"water.svg",
+   vin:"wine.svg",cocktail:"cocktail.svg",nouveau_gobelet:"cup.svg",retour_gobelet:"return.svg"
+ };
+ return map[k]||"cup.svg";
+}
+function productRows(id,items){
+ $(id).innerHTML="";
+ items.forEach(x=>{
+   const r=document.createElement("div");r.className="product";
+   r.innerHTML=`<div class="prod-main">
+     <img class="prod-icon" src="assets/${iconFor(x.k)}" alt="">
+     <div class="prod-text"><div class="name">${x.n}</div><div class="price">(${x.p} ${Math.abs(x.p)===1?"jeton":"jetons"})</div></div>
+   </div>
+   <button class="pm" data-k="${x.k}" data-d="-1">−</button>
+   <div class="qty" id="q_${x.k}">0</div>
+   <button class="pm plus" data-k="${x.k}" data-d="1">+</button>`;
+   $(id).appendChild(r)
+ });
+ $(id).querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{
+   qty[b.dataset.k]=Math.max(0,qty[b.dataset.k]+Number(b.dataset.d));renderBarTotal()
+ })
+}
+function renderBarTotal(){
+ let t=0;[...drinks,...cups].forEach(x=>{t+=qty[x.k]*x.p;const e=$("q_"+x.k);if(e)e.textContent=qty[x.k]});$("barTotal").textContent=t
+}
+function workView(){
+ const post=session?.post||"Bar Festival";
+ if(post==="Tickets"){
+   $("ticketSelect").value="Tickets";
+   show("tickets");
+ } else {
+   $("barSelect").value=post;
+   show("bar");
+ }
+ updateSession()
+}
+function updateSession(){
+ ["barVolunteer","ticketVolunteer","settingsVolunteer"].forEach(id=>$(id).textContent=volunteer());
+ $("startInfo").textContent=session?fmt(session.startedAt):"—";
+ $("ordersInfo").textContent=orders.length;
+ const consumed=orders.reduce((s,o)=>s+Number(o.total||0),0), sold=tickets.reduce((s,t)=>s+Number(t.quantity||0),0);
+ $("tokensInfo").textContent=consumed;$("soldInfo").textContent=sold;$("allTokensInfo").textContent=consumed+sold
+}
+function startSession(){
+ const first=$("first").value.trim(),last=$("last").value.trim();if(!first||!last){alert("Merci d'indiquer votre prénom et votre nom.");return}
+ session={first,last,post:selected,startedAt:new Date().toISOString()};save();workView()
+}
+function validateOrder(){
+ if(Object.values(qty).every(v=>v===0)){alert("Aucun article sélectionné.");return}
+ const total=[...drinks,...cups].reduce((s,x)=>s+qty[x.k]*x.p,0);
+ orders.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),timestamp:new Date().toISOString(),bar:$("barSelect").value,total,...qty});
+ qty=Object.fromEntries(Object.keys(qty).map(k=>[k,0]));save();renderBarTotal();updateSession()
+}
+function ticketCalc(){
+ const q=Math.max(0,Number($("tqty").value)||0);$("tqty").value=q;const total=q*TOKEN_PRICE;$("ticketTotal").textContent=total.toFixed(2).replace(".",",");
+ const rec=Number($("received").value)||0;$("change").textContent=`À rendre : ${Math.max(0,rec-total).toFixed(2).replace(".",",")} €`
+}
+function validateTicket(){
+ const q=Number($("tqty").value)||0;if(q<=0){alert("Indique le nombre de jetons.");return}if(!payment){alert("Choisis Cash ou Carte.");return}
+ const total=q*TOKEN_PRICE,received=payment==="cash"?(Number($("received").value)||0):total;if(payment==="cash"&&received<total){alert("Le montant reçu est inférieur au total.");return}
+ tickets.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),timestamp:new Date().toISOString(),quantity:q,unitPrice:TOKEN_PRICE,total,payment,received,change:Math.max(0,received-total)});
+ $("tqty").value=0;$("received").value="";payment=null;document.querySelectorAll(".pay").forEach(b=>b.classList.remove("active"));$("cashbox").classList.remove("show");save();ticketCalc();updateSession()
+}
+function closeSession(){$("closeModal").classList.add("show")}
+function confirmClose(){session=null;save();$("closeModal").classList.remove("show");$("first").value="";$("last").value="";selected="Bar Festival";renderPosts();show("start")}
+function openSettings(){updateSession();show("settings")}
+function refreshAdmin(){
+ $("kOrders").textContent=orders.length;$("kTokens").textContent=orders.reduce((s,o)=>s+o.total,0);$("kSold").textContent=tickets.reduce((s,t)=>s+t.quantity,0);
+ const by={};BAR_POSTS.forEach(b=>by[b]=0);orders.forEach(o=>by[o.bar]=(by[o.bar]||0)+o.total);const mx=Math.max(1,...Object.values(by));
+ $("barrows").innerHTML=Object.entries(by).map(([b,v])=>`<div class="barrow"><span>${b.replace("Bar ","")}</span><div class="track"><div class="fill" style="width:${v/mx*100}%"></div></div><strong>${v}</strong></div>`).join("");
+ const ds={};drinks.forEach(x=>ds[x.k]=0);orders.forEach(o=>drinks.forEach(x=>ds[x.k]+=Number(o[x.k]||0)));$("drinkStats").innerHTML=drinks.map(x=>`<div><span>${x.n}</span><strong>${ds[x.k]}</strong></div>`).join("");
+ const cash=tickets.filter(t=>t.payment==="cash").reduce((s,t)=>s+t.total,0),card=tickets.filter(t=>t.payment==="card").reduce((s,t)=>s+t.total,0);
+ $("ticketStats").innerHTML=`<div><span>CA total</span><strong>${(cash+card).toFixed(2)} €</strong></div><div><span>Carte</span><strong>${card.toFixed(2)} €</strong></div><div><span>Cash</span><strong>${cash.toFixed(2)} €</strong></div>`;
+ const nc=orders.reduce((s,o)=>s+Number(o.nouveau_gobelet||0),0),rc=orders.reduce((s,o)=>s+Number(o.retour_gobelet||0),0);$("cupStats").innerHTML=`<div><span>Nouveaux</span><strong>${nc}</strong></div><div><span>Retours</span><strong>${rc}</strong></div><div><span>Solde</span><strong>${nc-rc}</strong></div>`;
+ const hr=Array(12).fill(0);orders.forEach(o=>{const h=new Date(o.timestamp).getHours(),i=Math.max(0,Math.min(11,h-12));hr[i]+=o.total});const hm=Math.max(1,...hr),pts=hr.map((v,i)=>`${i*300/11},${135-v/hm*120}`).join(" ");
+ $("trend").innerHTML=`<polyline points="${pts}" fill="none" stroke="#ef2f5a" stroke-width="4" vector-effect="non-scaling-stroke"/><polyline points="0,135 ${pts} 300,135" fill="rgba(239,47,90,.09)" stroke="none"/>`;$("refreshTime").textContent=new Date().toLocaleTimeString("fr-BE")
+}
+function csvEsc(v){return `"${String(v??"").replaceAll('"','""')}"`}
+function exportCSV(){
+ const rows=[["type","date_heure","benevole","bar","jupiler","triple","soft","eau","vin","cocktail","nouveau_gobelet","retour_gobelet","total_jetons","nb_jetons_vendus","prix_unitaire","montant_eur","paiement","cash_recu","monnaie_rendue"]];
+ const who=volunteer()||"Session locale";
+ orders.forEach(o=>rows.push(["commande",o.timestamp,who,o.bar,o.jupiler,o.triple,o.soft,o.eau,o.vin,o.cocktail,o.nouveau_gobelet,o.retour_gobelet,o.total,"","","","","",""]));
+ tickets.forEach(t=>rows.push(["tickets",t.timestamp,who,"Tickets","","","","","","","","","",t.quantity,t.unitPrice,t.total,t.payment,t.received,t.change]));
+ const csv="\uFEFF"+rows.map(r=>r.map(csvEsc).join(";")).join("\n"),blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download=`Les_Granges_donnees_${new Date().toISOString().slice(0,10)}.csv`;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)
+}
+renderPosts();fillPostSelect("barSelect");fillPostSelect("ticketSelect");productRows("drinks",drinks);productRows("cups",cups);renderBarTotal();ticketCalc();
+
+$("startBtn").onclick=startSession;$("validateOrder").onclick=validateOrder;$("validateTicket").onclick=validateTicket;
+$("settingsBar").onclick=openSettings;$("settingsTickets").onclick=openSettings;$("closeBar").onclick=closeSession;$("closeTickets").onclick=closeSession;
+$("cancelClose").onclick=()=>$("closeModal").classList.remove("show");$("confirmClose").onclick=confirmClose;
+$("settingsBack").onclick=workView;$("returnWork").onclick=workView;
+$("editName").onclick=()=>{if(!session)return;const v=prompt("Prénom et nom",volunteer());if(v){const p=v.trim().split(/\s+/);session.first=p.shift()||session.first;session.last=p.join(" ")||session.last;save();updateSession()}};
+$("adminAccess").onclick=()=>$("adminModal").classList.add("show");$("cancelAdmin").onclick=()=>$("adminModal").classList.remove("show");$("previewAdmin").onclick=()=>{$("adminModal").classList.remove("show");refreshAdmin();show("admin")};
+$("adminBack").onclick=()=>show("settings");$("refresh").onclick=refreshAdmin;$("exportCsv").onclick=exportCSV;
+$("barSelect").onchange=e=>{
+ if(!session)return;
+ session.post=e.target.value; save();
+ if(e.target.value==="Tickets"){
+   $("ticketSelect").value="Tickets";
+   show("tickets");
+   updateSession();
+ }
+};
+$("ticketSelect").onchange=e=>{
+ if(!session)return;
+ session.post=e.target.value; save();
+ if(e.target.value!=="Tickets"){
+   $("barSelect").value=e.target.value;
+   show("bar");
+   updateSession();
+ }
+};
+$("tminus").onclick=()=>{$("tqty").value=Math.max(0,(Number($("tqty").value)||0)-1);ticketCalc()};$("tplus").onclick=()=>{$("tqty").value=(Number($("tqty").value)||0)+1;ticketCalc()};$("tqty").oninput=ticketCalc;$("received").oninput=ticketCalc;
+document.querySelectorAll(".pay").forEach(b=>b.onclick=()=>{payment=b.dataset.method;document.querySelectorAll(".pay").forEach(x=>x.classList.toggle("active",x===b));$("cashbox").classList.toggle("show",payment==="cash");ticketCalc()});
+
+if(session){$("first").value=session.first||"";$("last").value=session.last||"";workView()}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"))}
+</script>
+</body>
+</html>

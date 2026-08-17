@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 250" preserveAspectRatio="none">
+<rect width="1200" height="250" fill="none"/>
+<path d="M0 195 C130 130 240 205 360 155 C505 95 630 190 750 142 C900 85 1020 185 1200 118 L1200 250 L0 250Z" fill="#6BC28A"/>
+<path d="M0 215 C160 170 270 222 430 180 C590 138 760 218 920 170 C1040 135 1110 167 1200 152 L1200 250 L0 250Z" fill="#58AF79"/>
+<g stroke="#25744A" stroke-width="5" stroke-linecap="round">
+<path d="M60 248L60 110"/><path d="M130 248L130 165"/><path d="M205 248L205 93"/><path d="M285 248L285 145"/>
+<path d="M355 248L355 118"/><path d="M430 248L430 158"/><path d="M510 248L510 83"/><path d="M590 248L590 142"/>
+<path d="M670 248L670 112"/><path d="M745 248L745 154"/><path d="M835 248L835 82"/><path d="M910 248L910 145"/>
+<path d="M995 248L995 100"/><path d="M1080 248L1080 156"/><path d="M1150 248L1150 116"/>
+</g>
+<g>
+<g transform="translate(60 104)"><circle r="30" fill="#EF525D"/><circle r="9" fill="#18223A"/></g>
+<g transform="translate(130 158)"><circle r="21" fill="#F6C537"/><circle r="7" fill="#D77630"/></g>
+<g transform="translate(205 85)"><circle r="31" fill="#6578C8"/><circle r="9" fill="#F6C537"/></g>
+<g transform="translate(285 138)"><circle r="23" fill="#EC74A1"/><circle r="7" fill="#F6C537"/></g>
+<g transform="translate(355 110)"><circle r="29" fill="#EF525D"/><circle r="9" fill="#18223A"/></g>
+<g transform="translate(430 151)"><circle r="20" fill="#59A9D8"/><circle r="7" fill="#F6C537"/></g>
+<g transform="translate(510 76)"><circle r="31" fill="#F6C537"/><circle r="9" fill="#DF7C32"/></g>
+<g transform="translate(590 135)"><circle r="24" fill="#EC74A1"/><circle r="7" fill="#F6C537"/></g>
+<g transform="translate(670 105)"><circle r="28" fill="#EF525D"/><circle r="9" fill="#18223A"/></g>
+<g transform="translate(745 147)"><circle r="20" fill="#6578C8"/><circle r="7" fill="#F6C537"/></g>
+<g transform="translate(835 75)"><circle r="31" fill="#59A9D8"/><circle r="9" fill="#F6C537"/></g>
+<g transform="translate(910 138)"><circle r="23" fill="#F6C537"/><circle r="7" fill="#DF7C32"/></g>
+<g transform="translate(995 93)"><circle r="30" fill="#EF525D"/><circle r="9" fill="#18223A"/></g>
+<g transform="translate(1080 149)"><circle r="21" fill="#EC74A1"/><circle r="7" fill="#F6C537"/></g>
+<g transform="translate(1150 109)"><circle r="27" fill="#6578C8"/><circle r="8" fill="#F6C537"/></g>
+</g>
+<g fill="#2B8151" opacity=".85">
+<ellipse cx="78" cy="176" rx="11" ry="28" transform="rotate(-35 78 176)"/>
+<ellipse cx="188" cy="173" rx="10" ry="25" transform="rotate(28 188 173)"/>
+<ellipse cx="333" cy="179" rx="11" ry="28" transform="rotate(-28 333 179)"/>
+<ellipse cx="478" cy="178" rx="10" ry="26" transform="rotate(30 478 178)"/>
+<ellipse cx="638" cy="181" rx="11" ry="28" transform="rotate(-30 638 181)"/>
+<ellipse cx="800" cy="178" rx="10" ry="27" transform="rotate(32 800 178)"/>
+<ellipse cx="960" cy="181" rx="11" ry="29" transform="rotate(-32 960 181)"/>
+<ellipse cx="1120" cy="181" rx="10" ry="25" transform="rotate(29 1120 181)"/>
+</g>
+</svg>

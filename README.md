@@ -1,27 +1,53 @@
-# JetonBar v3 hybride
+# Festival Les Granges — App bar / tickets (V2 design)
 
-Le bénévole peut ouvrir trois types de session :
+Version prête pour GitHub Pages.
 
-1. Festival avec une configuration déjà enregistrée.
-2. Festival en scannant un QR ou en saisissant manuellement l’endpoint et le code.
-3. Session locale sans Festival, avec export ou partage CSV.
+## À déposer à la racine du repository
+- index.html
+- manifest.json
+- service-worker.js
+- assets/
 
-## Fichiers publics à mettre dans GitHub
+## Fonctionnel dans cette version
+- démarrage session : prénom / nom / poste
+- postes : Bar Festival, Bar Petite Grange, Bar Snack, Bar Burger, Tickets, Général
+- page Bar : boissons, gobelets, total jetons, menu déroulant pour changer de bar
+- page Tickets :
+  - nombre de jetons
+  - prix unitaire actuel : 1,50 €
+  - total automatique
+  - paiement Cash ou Carte
+  - montant reçu
+  - monnaie à rendre
+- Tickets est sélectionnable dans le même menu déroulant que les bars
+- passage libre Bar ↔ Tickets sans fermer la session
+- paramètres de session
+- aperçu Dashboard administrateur
+- actualisation Dashboard uniquement à l'ouverture / bouton Actualiser
+- export CSV local
 
-- `index.html`
-- `service-worker.js`
-- `manifest.json` déjà présent dans le dépôt
+## Étapes suivantes
+1. tables Supabase + IDs uniques de commandes
+2. synchronisation automatique / file locale hors ligne
+3. QR + lien privé de configuration Festival
+4. code administrateur unique côté serveur
+5. Dashboard global + export CSV de toutes les commandes
 
-Le configurateur QR reste local et ne doit pas être ajouté au dépôt.
 
-## Mode Festival
+## V4 — design affiche 2026
+- fond rose plus présent et texturé
+- grandes zones presque blanches avec nuance rose
+- fleurs décoratives en bas de chaque écran
+- nuages blancs et soleil jaune dans les en-têtes
+- abeilles décoratives
+- écran d'accueil plus proche de l'affiche 2026
+- toutes les fonctions V3 conservées, notamment le passage libre Bar ↔ Tickets
 
-À la clôture, l’application envoie les commandes à l’Edge Function. En cas d’échec, la session reste enregistrée sur le téléphone.
 
-## Mode local
-
-Aucune donnée n’est envoyée vers Supabase. Le bouton CSV permet l’export pendant la session. À la clôture, l’application demande de créer ou partager le CSV avant d’effacer la session.
-
-## Scanner QR
-
-Le scanner intégré utilise l’API `BarcodeDetector` lorsqu’elle est disponible. Sinon, le bénévole peut scanner le QR avec l’appareil photo du téléphone et ouvrir le lien, ou coller le lien dans l’application.
+## V5 — rapprochement de la maquette validée
+- icônes colorées devant chaque boisson et gobelet
+- header plus proche de la maquette
+- cartes presque blanches / rose très léger
+- nuages, soleil, abeilles et fleurs plus subtils
+- logo plus lisible et mieux proportionné
+- dashboard et page Tickets harmonisés avec la maquette
