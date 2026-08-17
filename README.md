@@ -97,3 +97,35 @@ Bar Dimanche:
 Bar Dimanche est maintenant séparé en :
 - Boissons
 - Produits : Chips, Tarte, Café
+
+
+## V5.8 — synchronisation Supabase
+Function URL:
+https://fkiawuwtvitnhiaysohd.supabase.co/functions/v1/sync-festival
+
+- enregistrement local en premier
+- synchronisation automatique à 10 éléments en attente
+- tentative après 30 minutes d'inactivité
+- tentative au retour d'Internet
+- bouton Synchroniser maintenant
+- tentative à la fermeture de session
+- code Festival conservé localement sur le téléphone, jamais dans GitHub
+
+## V5.9 — configuration Festival / mode local
+- sans configuration : Mode local, aucune popup de code, CSV toujours disponible
+- lien privé `#cfg=...` : configuration automatique du téléphone
+- le fragment contenant la configuration est supprimé de l'URL après import
+- si une configuration existe déjà : confirmation avant remplacement
+- Paramètres > Configurer/Modifier la configuration : collage d'un lien privé
+- fichier `CONFIG-GENERATOR-LOCAL.html` fourni uniquement pour usage local ; ne pas le publier sur GitHub
+- accès Admin affiche désormais un champ code ; la vérification sécurisée côté Supabase vient à l'étape suivante
+
+
+## V6.0 — Admin Supabase
+- accès admin par code saisi dans Paramètres de session
+- code admin conservé uniquement en sessionStorage
+- statistiques chargées depuis https://fkiawuwtvitnhiaysohd.supabase.co/functions/v1/admin-dashboard
+- filtre par poste
+- actualisation uniquement à l'ouverture / bouton Actualiser / changement de filtre
+- export CSV global depuis les données Supabase
+- bouton Fermer l'accès administrateur

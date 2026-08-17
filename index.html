@@ -262,8 +262,9 @@ button{cursor:pointer}
  <div class="card"><div class="card-title">Bénévole</div><div class="info-row"><strong id="settingsVolunteer"></strong><button id="editName" class="btn outline" style="width:auto;min-height:38px;padding:0 14px">Modifier</button></div></div>
  <div class="card">
   <div class="card-title">Synchronisation des commandes</div>
-  <div class="sync"><div class="cloud">☁︎</div><div class="main">Connexion à la base non activée</div><div class="sub">La synchronisation Supabase sera ajoutée à l'étape suivante.</div></div>
-  <button class="btn green" disabled style="opacity:.48">⟳ Synchroniser maintenant</button>
+  <div class="sync"><div class="cloud">☁︎</div><div class="main" id="settingsSyncMain">Synchronisation</div><div class="sub" id="settingsSyncSub">Les données sont d'abord enregistrées sur ce téléphone.</div></div>
+  <button class="btn green" id="syncNowBtn">⟳ Synchroniser maintenant</button>
+  <button class="btn soft" id="festivalConfigBtn" style="margin-top:8px">Configurer le Festival</button>
  </div>
  <div class="card">
   <div class="card-title">Informations de session</div>
@@ -281,37 +282,75 @@ button{cursor:pointer}
 </section>
 
 <section id="admin" class="view">
- <div class="page-decor"><img class="decor-cloud-left" src="assets/cloud.svg" alt=""><img class="decor-bee" src="assets/abeilles-les-granges.svg" alt=""></div>
- <div class="page-title"><button id="adminBack" class="back">←</button><div>Administration<br><small style="font-size:12px;color:var(--green)">Festival Les Granges · 21 & 22 août 2026</small></div></div>
- <div class="toolbar"><select id="filter" class="select">
-      <option value="all">Tous les postes</option>
-      <option>Tickets</option>
-      <option>Bar - Petit bois</option>
-      <option>Bar - Grange bleue</option>
-      <option>Stand Snack</option>
-      <option>Stand Burger</option>
-      <option>Bar Dimanche</option>
-    </select><button id="refresh" class="btn primary">⟳ Actualiser</button></div>
- <div class="note" style="margin:8px 1px">Dernière actualisation : <strong id="refreshTime">—</strong></div>
+ <div class="page-title">
+  <button id="adminBack" class="back">←</button>
+  <div>Administration<br><small style="font-size:12px;color:var(--green)">Festival Les Granges · 21 &amp; 22 août 2026</small></div>
+ </div>
+
+ <div class="toolbar">
+  <select id="filter" class="select">
+    <option value="all">Tous les postes</option>
+    <option value="Tickets">Tickets</option>
+    <option value="Bar - Petit bois">Bar - Petit bois</option>
+    <option value="Bar - Grange bleue">Bar - Grange bleue</option>
+    <option value="Stand Snack">Stand Snack</option>
+    <option value="Stand Burger">Stand Burger</option>
+    <option value="Bar Dimanche">Bar Dimanche</option>
+  </select>
+  <button id="refresh" class="btn primary">⟳ Actualiser</button>
+ </div>
+
+ <div class="note" style="margin:8px 1px">
+   Dernière actualisation : <strong id="refreshTime">—</strong>
+ </div>
+
+ <div id="adminError" class="note" style="display:none;color:#b3261e;margin:8px 1px"></div>
+
  <div class="admin-grid">
-  <div class="kpi"><small>Commandes</small><strong id="kOrders">0</strong></div>
-  <div class="kpi"><small style="color:var(--green)">Jetons consommés</small><strong id="kTokens">0</strong></div>
-  <div class="kpi"><small style="color:var(--purple)">Sessions locales</small><strong>1</strong></div>
-  <div class="kpi"><small style="color:var(--orange)">Jetons vendus</small><strong id="kSold">0</strong></div>
+  <div class="kpi"><small>Commandes</small><strong id="kOrders">—</strong></div>
+  <div class="kpi"><small style="color:var(--green)">Jetons consommés</small><strong id="kTokens">—</strong></div>
+  <div class="kpi"><small style="color:var(--purple)">Sessions</small><strong id="kSessions">—</strong></div>
+  <div class="kpi"><small style="color:var(--orange)">Jetons vendus</small><strong id="kSold">—</strong></div>
  </div>
- <div class="chart"><h3>Ventes par bar (jetons consommés)</h3><div id="barrows" class="barrows"></div></div>
+
+ <div class="chart">
+  <h3>Activité par poste</h3>
+  <div id="barrows" class="barrows"></div>
+ </div>
+
  <div class="twocol">
-  <div class="chart"><h3>Boissons</h3><div id="drinkStats" class="list"></div></div>
-  <div class="chart"><h3>Ventes de tickets</h3><div id="ticketStats" class="list"></div></div>
+  <div class="chart">
+   <h3>Produits</h3>
+   <div id="drinkStats" class="list"></div>
+  </div>
+  <div class="chart">
+   <h3>Tickets</h3>
+   <div id="ticketStats" class="list"></div>
+  </div>
  </div>
- <div class="chart"><h3>Ventes par heure</h3><div class="linegraph"><svg id="trend" viewBox="0 0 300 140" preserveAspectRatio="none"></svg></div></div>
- <div class="actions"><button id="exportCsv" class="btn outline">⬇ Exporter les données (CSV)</button><div class="note">Pour l'instant : données locales de ce téléphone. Après Supabase : export de toutes les commandes.</div></div>
- <div class="decorative-bottom"></div>
+
+ <div class="chart">
+  <h3>Jetons consommés par heure</h3>
+  <div class="linegraph">
+   <svg id="trend" viewBox="0 0 300 140" preserveAspectRatio="none"></svg>
+  </div>
+ </div>
+
+ <div class="actions">
+  <button id="exportCsv" class="btn outline">⬇ Exporter toutes les données (CSV)</button>
+  <button id="adminLogout" class="btn soft">🔒 Fermer l'accès administrateur</button>
+ </div>
 </section>
 </main>
 
 <div id="closeModal" class="modal"><div class="modalbox"><h3>Fermer la session ?</h3><p>Êtes-vous sûr de vouloir quitter la session ?</p><div class="note">La synchronisation automatique sera branchée à l'étape Supabase.</div><div class="modalbuttons"><button id="cancelClose" class="btn outline">Annuler</button><button id="confirmClose" class="btn danger">Fermer</button></div></div></div>
-<div id="adminModal" class="modal"><div class="modalbox"><h3>Accès administrateur</h3><p>Le code administrateur unique sera défini avec la base de données.</p><div class="modalbuttons"><button id="cancelAdmin" class="btn outline">Annuler</button><button id="previewAdmin" class="btn green">Aperçu</button></div></div></div>
+<div id="adminModal" class="modal"><div class="modalbox">
+  <h3>Accès administrateur</h3>
+  <p>Entrez le code administrateur.</p>
+  <input id="adminCodeInput" class="input" type="password" autocomplete="off" placeholder="Code administrateur">
+  <div class="note" style="margin-top:8px">La vérification sécurisée côté Supabase sera activée à l'étape suivante.</div>
+  <div class="modalbuttons"><button id="cancelAdmin" class="btn outline">Annuler</button><button id="previewAdmin" class="btn green">Se connecter</button></div>
+</div></div>
 
 <script>
 
@@ -399,6 +438,12 @@ const EXTRA_PRODUCTS = {
 };
 
 const TOKEN_PRICE = 1.50;
+const SYNC_FUNCTION_URL = "https://fkiawuwtvitnhiaysohd.supabase.co/functions/v1/sync-festival";
+const ADMIN_FUNCTION_URL = "https://fkiawuwtvitnhiaysohd.supabase.co/functions/v1/admin-dashboard";
+const SYNC_BATCH_SIZE = 10;
+const SYNC_IDLE_MS = 30 * 60 * 1000;
+let syncInProgress = false;
+let idleSyncTimer = null;
 
 let selected = "Tickets";
 let payment = null;
@@ -406,6 +451,9 @@ let qty = {};
 let session = JSON.parse(localStorage.getItem("lg_session_v3") || "null");
 let orders = JSON.parse(localStorage.getItem("lg_orders_v3") || "[]");
 let tickets = JSON.parse(localStorage.getItem("lg_tickets_v3") || "[]");
+let syncedOrderIds = new Set(JSON.parse(localStorage.getItem("lg_synced_order_ids") || "[]"));
+let syncedTicketIds = new Set(JSON.parse(localStorage.getItem("lg_synced_ticket_ids") || "[]"));
+let lastClosedSession = JSON.parse(localStorage.getItem("lg_last_closed_session") || "null");
 
 const $ = id => document.getElementById(id);
 
@@ -413,6 +461,9 @@ function save(){
   localStorage.setItem("lg_session_v3", JSON.stringify(session));
   localStorage.setItem("lg_orders_v3", JSON.stringify(orders));
   localStorage.setItem("lg_tickets_v3", JSON.stringify(tickets));
+  localStorage.setItem("lg_synced_order_ids", JSON.stringify([...syncedOrderIds]));
+  localStorage.setItem("lg_synced_ticket_ids", JSON.stringify([...syncedTicketIds]));
+  localStorage.setItem("lg_last_closed_session", JSON.stringify(lastClosedSession));
 }
 
 function show(id){
@@ -458,7 +509,8 @@ function requestSundayAccess(message){
   if(code === "DimancheBarFestival"){
     sundayOverride = true;
     sessionStorage.setItem("lg_sunday_override","1");
-    renderPosts();
+    readConfigFromCurrentUrl();
+renderPosts();
     fillPostSelect("barSelect");
     fillPostSelect("ticketSelect");
     return true;
@@ -473,6 +525,273 @@ function menuFor(post){ return MENUS[post] || []; }
 function resetQty(post){
   qty = {};
   [...menuFor(post), ...(EXTRA_PRODUCTS[post] || [])].forEach(x => qty[x.k] = 0);
+}
+
+
+function getFestivalConfig(){
+  try{
+    return JSON.parse(localStorage.getItem("lg_festival_config") || "null");
+  }catch(e){
+    return null;
+  }
+}
+
+function hasFestivalConfig(){
+  const cfg = getFestivalConfig();
+  return !!(cfg && cfg.syncCode && cfg.syncUrl);
+}
+
+function saveFestivalConfig(cfg){
+  localStorage.setItem("lg_festival_config", JSON.stringify(cfg));
+  updateSession();
+}
+
+function clearFestivalConfig(){
+  localStorage.removeItem("lg_festival_config");
+  updateSession();
+}
+
+function base64UrlDecode(value){
+  let s = value.replace(/-/g,"+").replace(/_/g,"/");
+  while(s.length % 4) s += "=";
+  return decodeURIComponent(
+    Array.prototype.map.call(atob(s), c =>
+      "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)
+    ).join("")
+  );
+}
+
+function parseConfigLink(value){
+  try{
+    const url = new URL(value, window.location.href);
+    const hash = url.hash || "";
+    const m = hash.match(/(?:^#|[&#])cfg=([^&]+)/);
+    if(!m) throw new Error("Configuration absente du lien.");
+
+    const cfg = JSON.parse(base64UrlDecode(m[1]));
+    if(!cfg.syncCode) throw new Error("Code de synchronisation absent.");
+    if(!cfg.syncUrl) throw new Error("URL de synchronisation absente.");
+
+    return {
+      name: cfg.name || "Festival Les Granges 2026",
+      syncUrl: cfg.syncUrl,
+      syncCode: cfg.syncCode
+    };
+  }catch(error){
+    throw new Error("Lien de configuration invalide.");
+  }
+}
+
+function importFestivalConfigFromLink(value, confirmReplace=true){
+  const cfg = parseConfigLink(value);
+  const existing = getFestivalConfig();
+
+  if(existing && confirmReplace){
+    const ok = confirm(
+      "Une configuration Festival est déjà enregistrée sur ce téléphone.\n\nÊtes-vous sûr de vouloir la remplacer ?"
+    );
+    if(!ok) return false;
+  }
+
+  saveFestivalConfig(cfg);
+  return true;
+}
+
+function readConfigFromCurrentUrl(){
+  if(!window.location.hash.includes("cfg=")) return;
+
+  try{
+    const cfg = parseConfigLink(window.location.href);
+    const existing = getFestivalConfig();
+
+    let accept = true;
+    if(existing){
+      accept = confirm(
+        "Une configuration Festival est déjà enregistrée.\n\nVoulez-vous la remplacer par celle de ce lien ?"
+      );
+    }
+
+    if(accept){
+      saveFestivalConfig(cfg);
+    }
+  }catch(error){
+    alert(error.message || "Configuration Festival invalide.");
+  }finally{
+    // Remove secret-bearing fragment from the visible URL/history.
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+  }
+}
+
+function pendingOrders(){
+  return orders.filter(o => !syncedOrderIds.has(o.id));
+}
+
+function pendingTickets(){
+  return tickets.filter(t => !syncedTicketIds.has(t.id));
+}
+
+function pendingCount(){
+  return pendingOrders().length + pendingTickets().length;
+}
+
+function syncSessionSource(){
+  if(session) return session;
+  if(lastClosedSession && pendingCount() > 0) return lastClosedSession;
+  return null;
+}
+
+function toSyncSession(){
+  const s = syncSessionSource();
+  if(!s) return null;
+
+  return {
+    session_id: s.id,
+    prenom: s.first,
+    nom: s.last,
+    date_debut: s.startedAt,
+    date_fin: s.endedAt || null,
+    statut: s.endedAt ? "closed" : "active"
+  };
+}
+
+function toSyncOrder(o){
+  return {
+    commande_id: o.id,
+    date_heure: o.timestamp,
+    poste: o.bar,
+    total_jetons: Number(o.total || 0),
+    lignes: (o.lines || []).map(l => ({
+      article_code: l.article_code,
+      article_nom: l.article_nom,
+      quantite: Number(l.quantite || 0),
+      jetons_unitaire: Number(l.jetons_unitaire || 0)
+    }))
+  };
+}
+
+function toSyncTicket(t){
+  return {
+    vente_id: t.id,
+    date_heure: t.timestamp,
+    nombre_jetons: Number(t.quantity || 0),
+    prix_unitaire: Number(t.unitPrice || 0),
+    montant_total: Number(t.total || 0),
+    mode_paiement: t.payment,
+    montant_recu: t.payment === "cash" ? Number(t.received || 0) : null,
+    monnaie_rendue: t.payment === "cash" ? Number(t.change || 0) : null
+  };
+}
+
+function updateSyncStatus(){
+  const n = pendingCount();
+  const configured = hasFestivalConfig();
+
+  const label = !configured
+    ? "Mode local"
+    : (n === 0
+      ? "Toutes les données sont synchronisées"
+      : `${n} ${n === 1 ? "élément à synchroniser" : "éléments à synchroniser"}`);
+
+  const color = !configured ? "#7b6f75" : (n === 0 ? "#51a742" : "#e39a12");
+  ["bar","tickets"].forEach(viewId => {
+    const target = document.querySelector(`#${viewId} .session-footer span`);
+    if(target){
+      target.innerHTML = `<span class="dot" style="background:${color}"></span>${label}`;
+    }
+  });
+}
+
+function scheduleIdleSync(){
+  if(idleSyncTimer) clearTimeout(idleSyncTimer);
+  idleSyncTimer = setTimeout(() => {
+    if(hasFestivalConfig()) syncNow(false);
+  }, SYNC_IDLE_MS);
+}
+
+function afterLocalWrite(){
+  save();
+  updateSyncStatus();
+  scheduleIdleSync();
+
+  if(pendingCount() >= SYNC_BATCH_SIZE && hasFestivalConfig()){
+    syncNow(false);
+  }
+}
+
+async function syncNow(showMessages=true){
+  const source = syncSessionSource();
+  if(!source) return false;
+  if(syncInProgress) return false;
+
+  const cfg = getFestivalConfig();
+  if(!cfg){
+    if(showMessages){
+      alert(
+        "Mode local\n\nAucune configuration Festival n'est enregistrée.\n\nLes données restent enregistrées sur ce téléphone et peuvent toujours être exportées en CSV."
+      );
+    }
+    updateSession();
+    return false;
+  }
+
+  const code = cfg.syncCode;
+
+  if(!navigator.onLine){
+    if(showMessages){
+      alert(`${pendingCount()} élément(s) restent conservé(s) sur ce téléphone.\n\nUne connexion Internet est nécessaire pour synchroniser.`);
+    }
+    updateSyncStatus();
+    return false;
+  }
+
+  const pOrders = pendingOrders();
+  const pTickets = pendingTickets();
+
+  syncInProgress = true;
+  try{
+    const response = await fetch(cfg.syncUrl || SYNC_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-festival-code": code
+      },
+      body: JSON.stringify({
+        session: toSyncSession(),
+        commandes: pOrders.map(toSyncOrder),
+        ventes_jetons: pTickets.map(toSyncTicket)
+      })
+    });
+
+    let result = {};
+    try { result = await response.json(); } catch(e) {}
+
+    if(!response.ok || !result.success){
+      throw new Error(result.error || `Erreur HTTP ${response.status}`);
+    }
+
+    pOrders.forEach(o => syncedOrderIds.add(o.id));
+    pTickets.forEach(t => syncedTicketIds.add(t.id));
+    localStorage.setItem("lg_last_sync_at", new Date().toISOString());
+
+    if(!session && lastClosedSession && pendingCount() === 0){
+      lastClosedSession = null;
+    }
+
+    save();
+    updateSession();
+
+    if(showMessages) alert("Synchronisation réussie.");
+    return true;
+  }catch(error){
+    console.error(error);
+    updateSyncStatus();
+    if(showMessages){
+      alert(`Synchronisation impossible.\n\n${pendingCount()} élément(s) restent sur ce téléphone.\n\n${error.message || error}`);
+    }
+    return false;
+  }finally{
+    syncInProgress = false;
+  }
 }
 
 function renderPosts(){
@@ -611,6 +930,41 @@ function updateSession(){
   $("tokensInfo").textContent = consumed;
   $("soldInfo").textContent = sold;
   $("allTokensInfo").textContent = consumed+sold;
+
+  updateSyncStatus();
+
+  const n = pendingCount();
+  const lastSync = localStorage.getItem("lg_last_sync_at");
+  const cfg = getFestivalConfig();
+
+  if($("settingsSyncMain")){
+    if(!cfg){
+      $("settingsSyncMain").textContent = "Mode local";
+    }else{
+      $("settingsSyncMain").textContent = n === 0
+        ? "Toutes les données sont synchronisées"
+        : `${n} ${n===1 ? "élément à synchroniser" : "éléments à synchroniser"}`;
+    }
+  }
+
+  if($("settingsSyncSub")){
+    if(!cfg){
+      $("settingsSyncSub").textContent =
+        "Les données sont enregistrées uniquement sur cet appareil.";
+    }else if(lastSync){
+      $("settingsSyncSub").textContent =
+        `${cfg.name || "Festival configuré"} · Dernière synchronisation : ${new Date(lastSync).toLocaleString("fr-BE")}`;
+    }else{
+      $("settingsSyncSub").textContent =
+        `${cfg.name || "Festival configuré"} · Synchronisation activée`;
+    }
+  }
+
+  if($("festivalConfigBtn")){
+    $("festivalConfigBtn").textContent = cfg
+      ? "Modifier la configuration"
+      : "Configurer le Festival";
+  }
 }
 
 function startSession(){
@@ -648,7 +1002,7 @@ function validateOrder(){
   const total = lines.reduce((s,l)=>s+l.quantite*l.jetons_unitaire,0);
   orders.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),session_id:session.id,timestamp:new Date().toISOString(),bar:session.post,total,lines});
   resetQty(session.post);
-  save();
+  afterLocalWrite();
   renderCurrentBar();
   updateSession();
 }
@@ -675,7 +1029,7 @@ function validateTicket(){
   payment=null;
   document.querySelectorAll(".pay").forEach(b=>b.classList.remove("active"));
   $("cashbox").classList.remove("show");
-  save();
+  afterLocalWrite();
   ticketCalc();
   updateSession();
 }
@@ -701,45 +1055,229 @@ function changePost(post){
 
 function closeSession(){$("closeModal").classList.add("show");}
 
-function confirmClose(){
-  session=null;
-  save();
+async function confirmClose(){
+  if(!session) return;
+
   $("closeModal").classList.remove("show");
-  $("first").value="";
-  $("last").value="";
-  selected="Tickets";
+
+  session.endedAt = new Date().toISOString();
+  lastClosedSession = {...session};
+  save();
+
+  await syncNow(false);
+  const remaining = pendingCount();
+  const closedName = volunteer();
+
+  session = null;
+  save();
+
+  $("first").value = "";
+  $("last").value = "";
+  selected = "Tickets";
   renderPosts();
   show("start");
+
+  if(!hasFestivalConfig()){
+    alert(
+      `Session de ${closedName} fermée.\n\nMode local : les données restent enregistrées sur ce téléphone.`
+    );
+  }else if(remaining === 0){
+    alert(`Session de ${closedName} fermée.\n\nToutes les données ont été synchronisées.`);
+  }else{
+    alert(`Session de ${closedName} fermée.\n\n${remaining} élément(s) restent à synchroniser.\n\nIls sont conservés sur ce téléphone. Il faudra rouvrir l'application avec Internet pour terminer la synchronisation.`);
+  }
 }
 
 function openSettings(){updateSession();show("settings");}
 
+
+let adminDashboardData = null;
+
+function getAdminCode(){
+  return sessionStorage.getItem("lg_admin_code") || "";
+}
+
+function setAdminCode(code){
+  sessionStorage.setItem("lg_admin_code", code);
+}
+
+function clearAdminCode(){
+  sessionStorage.removeItem("lg_admin_code");
+  adminDashboardData = null;
+}
+
+function adminFilterValue(){
+  return $("filter") ? $("filter").value : "all";
+}
+
+async function fetchAdminDashboard(showMessage=true){
+  const code = getAdminCode();
+  if(!code){
+    if(showMessage) alert("Code administrateur absent.");
+    return false;
+  }
+
+  $("adminError").style.display = "none";
+  $("adminError").textContent = "";
+
+  try{
+    const response = await fetch(ADMIN_FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-admin-code": code
+      },
+      body: JSON.stringify({
+        poste: adminFilterValue()
+      })
+    });
+
+    let data = {};
+    try{ data = await response.json(); }catch(e){}
+
+    if(response.status === 401){
+      clearAdminCode();
+      throw new Error("Code administrateur incorrect.");
+    }
+
+    if(!response.ok || !data.success){
+      throw new Error(data.error || `Erreur HTTP ${response.status}`);
+    }
+
+    adminDashboardData = data;
+    renderAdminDashboard(data);
+    return true;
+
+  }catch(error){
+    console.error(error);
+    $("adminError").textContent = error.message || String(error);
+    $("adminError").style.display = "block";
+    if(showMessage) alert(error.message || "Impossible de charger les données administrateur.");
+    return false;
+  }
+}
+
+function renderAdminDashboard(data){
+  const s = data.summary || {};
+  $("kOrders").textContent = s.nombre_commandes ?? 0;
+  $("kTokens").textContent = s.jetons_consommes ?? 0;
+  $("kSessions").textContent = s.nombre_sessions ?? 0;
+  $("kSold").textContent = s.jetons_vendus ?? 0;
+
+  const bars = Array.isArray(data.postes) ? data.postes : [];
+  const max = Math.max(1, ...bars.map(x => Number(x.jetons || 0)));
+  $("barrows").innerHTML = bars.length
+    ? bars.map(x => `
+      <div class="barrow">
+       <span>${x.poste}</span>
+       <div class="track"><div class="fill" style="width:${Number(x.jetons||0)/max*100}%"></div></div>
+       <strong>${x.jetons || 0}</strong>
+      </div>`).join("")
+    : `<div class="note">Aucune donnée pour ce filtre.</div>`;
+
+  const products = Array.isArray(data.produits) ? data.produits : [];
+  $("drinkStats").innerHTML = products.length
+    ? products.slice(0,25).map(x => `<div><span>${x.article_nom}</span><strong>${x.quantite}</strong></div>`).join("")
+    : `<div class="note">Aucune donnée.</div>`;
+
+  const t = data.tickets || {};
+  $("ticketStats").innerHTML = `
+    <div><span>Jetons vendus</span><strong>${t.jetons_vendus ?? 0}</strong></div>
+    <div><span>CA total</span><strong>${Number(t.ca_total || 0).toFixed(2)} €</strong></div>
+    <div><span>Carte</span><strong>${Number(t.ca_carte || 0).toFixed(2)} €</strong></div>
+    <div><span>Cash</span><strong>${Number(t.ca_cash || 0).toFixed(2)} €</strong></div>`;
+
+  const hourly = Array.isArray(data.par_heure) ? data.par_heure : [];
+  const values = Array(24).fill(0);
+  hourly.forEach(x => {
+    const h = Number(x.heure);
+    if(h >= 0 && h <= 23) values[h] = Number(x.jetons || 0);
+  });
+
+  const maxH = Math.max(1, ...values);
+  const pts = values.map((v,i) => `${i*300/23},${135-v/maxH*120}`).join(" ");
+  $("trend").innerHTML = `
+    <polyline points="${pts}" fill="none" stroke="#ef2f5a" stroke-width="4" vector-effect="non-scaling-stroke"/>
+    <polyline points="0,135 ${pts} 300,135" fill="rgba(239,47,90,.09)" stroke="none"/>`;
+
+  $("refreshTime").textContent = new Date(data.generated_at || Date.now()).toLocaleTimeString("fr-BE");
+}
+
 function refreshAdmin(){
-  $("kOrders").textContent=orders.length;
-  $("kTokens").textContent=orders.reduce((s,o)=>s+Number(o.total||0),0);
-  $("kSold").textContent=tickets.reduce((s,t)=>s+Number(t.quantity||0),0);
+  return fetchAdminDashboard(true);
+}
 
-  const by={};BAR_POSTS.forEach(b=>by[b]=0);orders.forEach(o=>by[o.bar]=(by[o.bar]||0)+Number(o.total||0));
-  const mx=Math.max(1,...Object.values(by));
-  $("barrows").innerHTML=Object.entries(by).map(([b,v])=>`<div class="barrow"><span>${b}</span><div class="track"><div class="fill" style="width:${v/mx*100}%"></div></div><strong>${v}</strong></div>`).join("");
+function adminCsvEsc(v){
+  return `"${String(v ?? "").replaceAll('"','""')}"`;
+}
 
-  const products={};
-  orders.forEach(o=>(o.lines||[]).forEach(l=>{
-    products[l.article_nom]=(products[l.article_nom]||0)+Number(l.quantite||0);
-  }));
-  $("drinkStats").innerHTML=Object.entries(products).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([n,v])=>`<div><span>${n}</span><strong>${v}</strong></div>`).join("");
+function exportAdminCSV(){
+  if(!adminDashboardData || !adminDashboardData.raw){
+    alert("Actualise d'abord le tableau de bord.");
+    return;
+  }
 
-  const cash=tickets.filter(t=>t.payment==="cash").reduce((s,t)=>s+t.total,0);
-  const card=tickets.filter(t=>t.payment==="card").reduce((s,t)=>s+t.total,0);
-  $("ticketStats").innerHTML=`<div><span>CA total</span><strong>${(cash+card).toFixed(2)} €</strong></div><div><span>Carte</span><strong>${card.toFixed(2)} €</strong></div><div><span>Cash</span><strong>${cash.toFixed(2)} €</strong></div>`;
+  const raw = adminDashboardData.raw;
+  const rows = [[
+    "type","session_id","date_heure","prenom","nom","poste",
+    "commande_id","article_code","article_nom","quantite","jetons_unitaire","total_jetons",
+    "vente_id","nombre_jetons","prix_unitaire","montant_total","mode_paiement","montant_recu","monnaie_rendue"
+  ]];
 
-  $("cupStats").innerHTML=`<div><span>Pas de caution gobelets en 2026</span><strong>—</strong></div>`;
+  const sessionsById = {};
+  (raw.sessions || []).forEach(s => sessionsById[s.session_id] = s);
 
-  const hr=Array(12).fill(0);
-  orders.forEach(o=>{const h=new Date(o.timestamp).getHours(),i=Math.max(0,Math.min(11,h-12));hr[i]+=Number(o.total||0);});
-  const hm=Math.max(1,...hr),pts=hr.map((v,i)=>`${i*300/11},${135-v/hm*120}`).join(" ");
-  $("trend").innerHTML=`<polyline points="${pts}" fill="none" stroke="#ef2f5a" stroke-width="4" vector-effect="non-scaling-stroke"/><polyline points="0,135 ${pts} 300,135" fill="rgba(239,47,90,.09)" stroke="none"/>`;
-  $("refreshTime").textContent=new Date().toLocaleTimeString("fr-BE");
+  const commandesById = {};
+  (raw.commandes || []).forEach(c => commandesById[c.commande_id] = c);
+
+  (raw.lignes || []).forEach(l => {
+    const c = commandesById[l.commande_id] || {};
+    const s = sessionsById[c.session_id] || {};
+    rows.push([
+      "commande",
+      c.session_id || "",
+      c.date_heure || "",
+      s.prenom || "",
+      s.nom || "",
+      c.poste || "",
+      c.commande_id || "",
+      l.article_code || "",
+      l.article_nom || "",
+      l.quantite || 0,
+      l.jetons_unitaire || 0,
+      c.total_jetons || 0,
+      "","","","","","",""
+    ]);
+  });
+
+  (raw.ventes_jetons || []).forEach(v => {
+    const s = sessionsById[v.session_id] || {};
+    rows.push([
+      "tickets",
+      v.session_id || "",
+      v.date_heure || "",
+      s.prenom || "",
+      s.nom || "",
+      "Tickets",
+      "","","","","","",
+      v.vente_id || "",
+      v.nombre_jetons || 0,
+      v.prix_unitaire || 0,
+      v.montant_total || 0,
+      v.mode_paiement || "",
+      v.montant_recu ?? "",
+      v.monnaie_rendue ?? ""
+    ]);
+  });
+
+  const csv = "\uFEFF" + rows.map(r => r.map(adminCsvEsc).join(";")).join("\n");
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = u;
+  a.download = `Les_Granges_ADMIN_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(u), 1000);
 }
 
 function csvEsc(v){return `"${String(v??"").replaceAll('"','""')}"`;}
@@ -791,10 +1329,55 @@ $("editName").onclick=()=>{
 
 $("adminAccess").onclick=()=>$("adminModal").classList.add("show");
 $("cancelAdmin").onclick=()=>$("adminModal").classList.remove("show");
-$("previewAdmin").onclick=()=>{$("adminModal").classList.remove("show");refreshAdmin();show("admin");};
+$("previewAdmin").onclick=async()=>{
+  const code = $("adminCodeInput").value.trim();
+  if(!code){
+    alert("Entrez le code administrateur.");
+    return;
+  }
+
+  setAdminCode(code);
+  $("adminCodeInput").value = "";
+
+  const ok = await fetchAdminDashboard(false);
+  if(!ok){
+    clearAdminCode();
+    alert("Code administrateur incorrect ou accès impossible.");
+    return;
+  }
+
+  $("adminModal").classList.remove("show");
+  show("admin");
+};
 $("adminBack").onclick=()=>show("settings");
-$("refresh").onclick=refreshAdmin;
-$("exportCsv").onclick=exportCSV;
+$("filter").onchange=()=>fetchAdminDashboard(false);
+$("adminLogout").onclick=()=>{clearAdminCode();show("settings");};
+$("refresh").onclick=()=>fetchAdminDashboard(true);
+$("exportCsv").onclick=exportAdminCSV;
+$("syncNowBtn").onclick=()=>syncNow(true);
+$("festivalConfigBtn").onclick=()=>{
+  const existing = getFestivalConfig();
+
+  if(existing){
+    const ok = confirm(
+      "Une configuration Festival est déjà enregistrée sur ce téléphone.\n\nÊtes-vous sûr de vouloir la modifier ?"
+    );
+    if(!ok) return;
+  }
+
+  const link = prompt(
+    "Configuration Festival\n\nCollez le lien privé de configuration.\n\nLe lien contient les informations nécessaires à la synchronisation."
+  );
+
+  if(link === null || !link.trim()) return;
+
+  try{
+    importFestivalConfigFromLink(link.trim(), false);
+    alert("Configuration Festival enregistrée.");
+  }catch(error){
+    alert(error.message || "Lien de configuration invalide.");
+  }
+};
 
 $("barSelect").onchange=e=>changePost(e.target.value);
 $("ticketSelect").onchange=e=>changePost(e.target.value);
@@ -816,6 +1399,19 @@ if(session){
   $("last").value=session.last||"";
   workView();
 }
+
+
+window.addEventListener("online",()=>{
+  if(hasFestivalConfig() && pendingCount()>0){
+    syncNow(false);
+  }
+});
+
+setTimeout(()=>{
+  if(hasFestivalConfig() && navigator.onLine && pendingCount()>0){
+    syncNow(false);
+  }
+},1500);
 
 if("serviceWorker" in navigator){
   window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));
