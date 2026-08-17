@@ -1,4 +1,4 @@
-const CACHE_NAME = "les-granges-ui-v6-0-admin";
+const CACHE_NAME = "les-granges-ui-v6-1-auto-config";
 const FILES = [
   "./",
   "./index.html",
