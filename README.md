@@ -51,3 +51,49 @@ Version prête pour GitHub Pages.
 - nuages, soleil, abeilles et fleurs plus subtils
 - logo plus lisible et mieux proportionné
 - dashboard et page Tickets harmonisés avec la maquette
+
+
+## V5.2 FIXED
+Postes :
+1. Tickets
+2. Bar - Petit bois
+3. Bar - Grange bleue
+4. Stand Snack
+5. Stand Burger
+6. Bar Dimanche
+
+Bar Dimanche est visible mais désactivé hors dimanche (Europe/Brussels).
+
+
+## V5.3
+- suppression complète de la gestion des gobelets / cautions
+- même icône que l'eau pour Coca, Fanta, jus d'orange et jus de pomme
+- Bar - Petit bois séparé en deux sections :
+  - Boissons
+  - Produits : Chips et Acroticcini
+
+## V5.4
+Bar Dimanche:
+- accès automatique le dimanche (Europe/Brussels)
+- hors dimanche: accès possible avec le code exceptionnel `DimancheBarFestival`
+- l'autorisation exceptionnelle reste active pendant l'onglet/session du navigateur
+
+## V5.5 — règle dimanche
+- Bar Dimanche demande toujours le code `DimancheBarFestival`, même le dimanche.
+- Le dimanche, Bar - Petit bois, Bar - Grange bleue, Stand Snack et Stand Burger sont bloqués.
+- Tickets reste accessible le dimanche.
+- Hors dimanche, les bars/stands normaux restent accessibles ; Bar Dimanche reste accessible uniquement avec le code.
+
+## V5.6 — règles d'accès
+- Tickets : toujours accessible.
+- Bar Dimanche :
+  - dimanche : accès direct
+  - lundi à samedi : code `DimancheBarFestival`
+- Autres bars / stands :
+  - lundi à samedi : accès direct
+  - dimanche : code `DimancheBarFestival`
+
+## V5.7
+Bar Dimanche est maintenant séparé en :
+- Boissons
+- Produits : Chips, Tarte, Café

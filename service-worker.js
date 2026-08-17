@@ -1,4 +1,4 @@
-const CACHE_NAME = "les-granges-ui-v5-1";
+const CACHE_NAME = "les-granges-ui-v5-7";
 const FILES = [
   "./",
   "./index.html",
@@ -15,7 +15,14 @@ const FILES = [
   "./assets/cocktail.svg",
   "./assets/cup.svg",
   "./assets/return.svg",
-  "./assets/ticket.svg"
+  "./assets/ticket.svg",
+  "./assets/coffee.svg",
+  "./assets/burger.svg",
+  "./assets/cake.svg",
+  "./assets/icecream.svg",
+  "./assets/crepe.svg",
+  "./assets/chips.svg",
+  "./assets/skewer.svg"
 ];
 
 self.addEventListener("install", (event) => {
