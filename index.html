@@ -89,6 +89,7 @@ button{cursor:pointer}
  min-height:48px;border-bottom:1px solid #f2e1e5
 }
 .product:last-child{border-bottom:0}
+.product.group-start{margin-top:12px;padding-top:8px;border-top:2px solid #f4d9df}
 .name{font-weight:750;font-size:15px}.price{color:var(--pink);font-size:12px;font-weight:750}
 .pm{height:37px;border-radius:7px;background:#fff;border:1px solid #efbdc8;color:var(--pink);font-size:21px;font-weight:950}
 .pm.plus{color:var(--green);border-color:#b8dbc5}.qty{text-align:center;font-weight:950}
@@ -457,9 +458,21 @@ const MENUS = {
     
   ],
   "Bar - Grange bleue": [
-    {k:"tarte", n:"Tarte", p:3, icon:"cake.svg"},
-    {k:"cake", n:"Cake", p:3, icon:"cake.svg"},
-    {k:"cafe", n:"Café", p:2, icon:"coffee.svg"}
+    {k:"eau", n:"Eau plate / pétillante", p:1, icon:"water.svg"},
+    {k:"coca", n:"Coca regular / zero", p:2, icon:"water.svg"},
+    {k:"jus_orange", n:"Jus d'orange (Materne)", p:2, icon:"water.svg"},
+    {k:"jus_pomme", n:"Jus de pomme (Agri-beaufruits)", p:2, icon:"water.svg"},
+
+    {k:"aboline", n:"Aboline saisons 33 cl", p:3, icon:"beer.svg"},
+    {k:"biere_0", n:"Trottinette (sans alcool)", p:3, icon:"beer.svg"},
+    {k:"ginger_beer", n:"Ginger Beer", p:3, icon:"beer.svg"},
+
+    {k:"jamaican_mule", n:"Jamaican Mule (Ginger Beer + Rhum)", p:4, icon:"cocktail.svg"},
+    {k:"moscow_mule", n:"Moscow Mule (Ginger Beer + Vodka)", p:4, icon:"cocktail.svg"},
+
+    {k:"blanc_de_blanc_verre", n:"Bulles Domaine des hêtres (verre)", p:4, icon:"wine.svg"},
+    {k:"vin_blanc_verre", n:"Vin blanc (verre)", p:3, icon:"wine.svg"},
+    {k:"vin_rose_verre", n:"Vin rosé (verre)", p:3, icon:"wine.svg"}
   ],
   "Stand Snack": [
     {k:"crepes", n:"Crêpes — nature / sucre / Nutella", p:2, icon:"crepe.svg"},
@@ -498,6 +511,11 @@ const EXTRA_PRODUCTS = {
   "Bar - Petit bois": [
     {k:"chips", n:"Chips Sel / Paprika / Grills", p:1, icon:"chips.svg"},
     {k:"acroticcini", n:"Acroticcini — 5 brochettes", p:4, icon:"skewer.svg"}
+  ],
+  "Bar - Grange bleue": [
+    {k:"tarte", n:"Morceau de tarte (mathéline)", p:3, icon:"cake.svg"},
+    {k:"cake", n:"Morceau de Cake (maison)", p:1, icon:"cake.svg"},
+    {k:"cafe", n:"Café", p:2, icon:"coffee.svg"}
   ],
   "Bar Dimanche": [
     {k:"chips", n:"Chips Sel / Paprika / Grills", p:1, icon:"chips.svg"},
@@ -932,9 +950,12 @@ function fillPostSelect(id){
 
 function productRows(id,items){
   $(id).innerHTML = "";
-  items.forEach(x => {
+  let previousIcon = null;
+  items.forEach((x, index) => {
     const r = document.createElement("div");
-    r.className = "product";
+    const newGroup = index > 0 && x.icon !== previousIcon;
+    r.className = `product${newGroup ? " group-start" : ""}`;
+    previousIcon = x.icon;
     r.innerHTML = `<div class="prod-main"><img class="prod-icon" src="assets/${x.icon}" alt=""><div class="prod-text"><div class="name">${x.n}</div><div class="price">(${x.p} ${Math.abs(x.p)===1?"jeton":"jetons"})</div></div></div><button class="pm" data-k="${x.k}" data-d="-1">−</button><div class="qty" id="q_${x.k}">${qty[x.k]||0}</div><button class="pm plus" data-k="${x.k}" data-d="1">+</button>`;
     $(id).appendChild(r);
   });
