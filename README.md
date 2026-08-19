@@ -1,140 +1,127 @@
-# Festival Les Granges — App bar / tickets (V2 design)
+# Festival Les Granges — App bar
 
-Version prête pour GitHub Pages.
+# 🎪 Festival Les Granges — Application Bar & Tickets
 
-## À déposer à la racine du repository
-- index.html
-- manifest.json
-- service-worker.js
-- assets/
+Application web développée pour le **Festival Les Granges** afin de faciliter la gestion des commandes, des jetons et de la vente de tickets pendant le festival.
 
-## Fonctionnel dans cette version
-- démarrage session : prénom / nom / poste
-- postes : Bar Festival, Bar Petite Grange, Bar Snack, Bar Burger, Tickets, Général
-- page Bar : boissons, gobelets, total jetons, menu déroulant pour changer de bar
-- page Tickets :
-  - nombre de jetons
-  - prix unitaire actuel : 1,50 €
-  - total automatique
-  - paiement Cash ou Carte
-  - montant reçu
-  - monnaie à rendre
-- Tickets est sélectionnable dans le même menu déroulant que les bars
-- passage libre Bar ↔ Tickets sans fermer la session
-- paramètres de session
-- aperçu Dashboard administrateur
-- actualisation Dashboard uniquement à l'ouverture / bouton Actualiser
-- export CSV local
+L'application est conçue principalement pour être utilisée sur **smartphone par les bénévoles**.
 
-## Étapes suivantes
-1. tables Supabase + IDs uniques de commandes
-2. synchronisation automatique / file locale hors ligne
-3. QR + lien privé de configuration Festival
-4. code administrateur unique côté serveur
-5. Dashboard global + export CSV de toutes les commandes
+Elle fonctionne comme une application web installable (PWA) et peut continuer à enregistrer les commandes en cas de perte temporaire de connexion Internet.
 
+---
 
-## V4 — design affiche 2026
-- fond rose plus présent et texturé
-- grandes zones presque blanches avec nuance rose
-- fleurs décoratives en bas de chaque écran
-- nuages blancs et soleil jaune dans les en-têtes
-- abeilles décoratives
-- écran d'accueil plus proche de l'affiche 2026
-- toutes les fonctions V3 conservées, notamment le passage libre Bar ↔ Tickets
+## 🍺 Bar & stands
 
+L'application permet au bénévole de sélectionner simplement les produits commandés.
 
-## V5 — rapprochement de la maquette validée
-- icônes colorées devant chaque boisson et gobelet
-- header plus proche de la maquette
-- cartes presque blanches / rose très léger
-- nuages, soleil, abeilles et fleurs plus subtils
-- logo plus lisible et mieux proportionné
-- dashboard et page Tickets harmonisés avec la maquette
+Elle calcule automatiquement le **nombre total de jetons** à demander au client.
 
+Les différents postes disponibles sont :
 
-## V5.2 FIXED
-Postes :
-1. Tickets
-2. Bar - Petit bois
-3. Bar - Grange bleue
-4. Stand Snack
-5. Stand Burger
-6. Bar Dimanche
+- Tickets
+- Bar — Petit Bois
+- Bar — Grange Bleue
+- Stand Snack
+- Stand Burger
+- Bar Dimanche
 
-Bar Dimanche est visible mais désactivé hors dimanche (Europe/Brussels).
+Les produits et tarifs en jetons dépendent du poste sélectionné.
 
+Le bénévole peut changer de poste pendant sa session sans devoir fermer l'application.
 
-## V5.3
-- suppression complète de la gestion des gobelets / cautions
-- même icône que l'eau pour Coca, Fanta, jus d'orange et jus de pomme
-- Bar - Petit bois séparé en deux sections :
-  - Boissons
-  - Produits : Chips et Acroticcini
+---
 
-## V5.4
-Bar Dimanche:
-- accès automatique le dimanche (Europe/Brussels)
-- hors dimanche: accès possible avec le code exceptionnel `DimancheBarFestival`
-- l'autorisation exceptionnelle reste active pendant l'onglet/session du navigateur
+## 🎟️ Vente de tickets
 
-## V5.5 — règle dimanche
-- Bar Dimanche demande toujours le code `DimancheBarFestival`, même le dimanche.
-- Le dimanche, Bar - Petit bois, Bar - Grange bleue, Stand Snack et Stand Burger sont bloqués.
-- Tickets reste accessible le dimanche.
-- Hors dimanche, les bars/stands normaux restent accessibles ; Bar Dimanche reste accessible uniquement avec le code.
+Le mode **Tickets** permet de calculer rapidement :
 
-## V5.6 — règles d'accès
-- Tickets : toujours accessible.
-- Bar Dimanche :
-  - dimanche : accès direct
-  - lundi à samedi : code `DimancheBarFestival`
-- Autres bars / stands :
-  - lundi à samedi : accès direct
-  - dimanche : code `DimancheBarFestival`
+- le nombre de jetons demandé ;
+- le montant à payer ;
+- le mode de paiement (cash ou carte) ;
+- le montant reçu en espèces ;
+- la monnaie à rendre.
 
-## V5.7
-Bar Dimanche est maintenant séparé en :
-- Boissons
-- Produits : Chips, Tarte, Café
+Le prix d'un jeton est défini dans la configuration du festival.
 
+---
 
-## V5.8 — synchronisation Supabase
-Function URL:
-https://fkiawuwtvitnhiaysohd.supabase.co/functions/v1/sync-festival
+## 📱 Utilisation
 
-- enregistrement local en premier
-- synchronisation automatique à 10 éléments en attente
-- tentative après 30 minutes d'inactivité
-- tentative au retour d'Internet
-- bouton Synchroniser maintenant
-- tentative à la fermeture de session
-- code Festival conservé localement sur le téléphone, jamais dans GitHub
+Au démarrage, le bénévole renseigne :
 
-## V5.9 — configuration Festival / mode local
-- sans configuration : Mode local, aucune popup de code, CSV toujours disponible
-- lien privé `#cfg=...` : configuration automatique du téléphone
-- le fragment contenant la configuration est supprimé de l'URL après import
-- si une configuration existe déjà : confirmation avant remplacement
-- Paramètres > Configurer/Modifier la configuration : collage d'un lien privé
-- fichier `CONFIG-GENERATOR-LOCAL.html` fourni uniquement pour usage local ; ne pas le publier sur GitHub
-- accès Admin affiche désormais un champ code ; la vérification sécurisée côté Supabase vient à l'étape suivante
+- son prénom ;
+- son nom ;
+- son poste.
 
+Une session est ensuite ouverte.
 
-## V6.0 — Admin Supabase
-- accès admin par code saisi dans Paramètres de session
-- code admin conservé uniquement en sessionStorage
-- statistiques chargées depuis https://fkiawuwtvitnhiaysohd.supabase.co/functions/v1/admin-dashboard
-- filtre par poste
-- actualisation uniquement à l'ouverture / bouton Actualiser / changement de filtre
-- export CSV global depuis les données Supabase
-- bouton Fermer l'accès administrateur
+Les commandes sont enregistrées localement sur le téléphone puis synchronisées avec le serveur lorsque la connexion Internet est disponible.
 
-## V6.1 — correction import automatique lien/QR
-- le fragment `#cfg=...` est lu immédiatement dans le `<head>`
-- la configuration est sauvegardée AVANT l'initialisation de l'app
-- le fragment secret est retiré de l'URL seulement après sauvegarde
-- si la même configuration existe déjà : aucune question
-- si une configuration différente existe : confirmation avant remplacement
-- diagnostic visible uniquement si l'import automatique échoue
-- cache service worker bumpé pour éviter l'ancienne version
+L'application peut donc continuer à être utilisée en cas de connexion instable pendant le festival.
+
+---
+
+## 🔄 Synchronisation
+
+Les données sont enregistrées **localement en premier** afin de ne pas bloquer les bénévoles en cas de problème réseau.
+
+La synchronisation est ensuite tentée automatiquement :
+
+- lorsqu'un certain nombre d'éléments sont en attente ;
+- après une période d'inactivité ;
+- au retour de la connexion Internet ;
+- lors de la fermeture d'une session.
+
+Une synchronisation manuelle est également disponible dans les paramètres.
+
+---
+
+## 🔐 Configuration du festival
+
+Les paramètres propres au festival ne sont pas directement intégrés dans le dépôt GitHub.
+
+Les téléphones peuvent être configurés à l'aide d'un **lien privé / QR code de configuration**.
+
+Une fois la configuration importée :
+
+1. elle est enregistrée localement sur le téléphone ;
+2. le fragment de configuration est retiré de l'URL ;
+3. l'application peut ensuite être utilisée normalement.
+
+Sans configuration, l'application fonctionne en **mode local**.
+
+---
+
+## 📊 Administration
+
+Un espace administrateur permet de consulter les données centralisées du festival.
+
+Il permet notamment :
+
+- de consulter les statistiques ;
+- de filtrer les résultats par poste ;
+- d'actualiser les données ;
+- d'exporter les commandes au format CSV.
+
+L'accès administrateur est protégé par un code vérifié côté serveur.
+
+---
+
+## ☁️ Backend
+
+La synchronisation et l'administration utilisent **Supabase Edge Functions**.
+
+Les données sont centralisées dans Supabase tandis que l'application GitHub Pages reste une application web statique.
+
+Aucun code administrateur ou secret serveur ne doit être enregistré directement dans ce repository.
+
+---
+
+## 📂 Structure
+
+```text
+/
+├── index.html
+├── manifest.json
+├── service-worker.js
+└── assets/
