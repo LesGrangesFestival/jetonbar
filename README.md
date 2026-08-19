@@ -1,5 +1,3 @@
-# Festival Les Granges — App bar
-
 # 🎪 Festival Les Granges — Application Bar & Tickets
 
 Application web développée pour le **Festival Les Granges** afin de faciliter la gestion des commandes, des jetons et de la vente de tickets pendant le festival.
